@@ -2,5 +2,7 @@ package model;
 
 public interface Location {
 
-  Location getLocation();
+  int getRow();
+
+  int getColumn();
 }

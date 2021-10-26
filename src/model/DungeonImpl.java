@@ -6,23 +6,27 @@ import java.lang.reflect.Array;
  * The implementation of the Dungeon interface.
  */
 public class DungeonImpl implements Dungeon {
+  //private final Object Cave;
   //private final Object Location;
   private boolean wraps;
   private int rows;
   private int columns;
   private int interconnect;
   private int treasure;
-  //private Array[][] Gameboard;
+  //Cave[][] Gameboard;
 
-  DungeonImpl(Object location, boolean wraps, int rows, int columns, int interconnect,
+  DungeonImpl(Object location, Object cave, boolean wraps, int rows, int columns, int interconnect,
               int treasure) {
+    //possible case for the builder pattern for this constructor using the make dungeon method
+    // to abstract it
+    //Cave = cave;
     //Location = location;
     this.wraps = wraps;
     this.rows = rows;
     this.columns = columns;
     this.interconnect = interconnect;
     this.treasure = treasure;
-    //Location[rows][columns] = Gameboard;
+    //Cave[rows][columns] = new Cave();
 
     if (rows < 1 || columns < 1) {
       throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
