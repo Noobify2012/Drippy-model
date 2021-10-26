@@ -11,14 +11,17 @@ public class Cave extends AbstractLocation {
     }
   }
 
+//  protected ArrayList getEntrances() {
+//    return null;
+//  }
 
-  @Override
-  public int getRow() {
-    return 0;
+  protected int getRow() {
+    return location.getRow();
   }
 
-  @Override
-  public int getColumn() {
-    return 0;
+  protected int getColumn() {
+    return location.getColumn();
   }
+
+
 }
