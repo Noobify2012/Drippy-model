@@ -11,6 +11,7 @@ public abstract class AbstractLocation implements Location {
   protected AbstractLocation(Point2D location, ArrayList entrances, ArrayList neighborList,
                              ArrayList treasureList) {
     this.location = location;
+    //TODO - possibly remove 1
     this.entrances = entrances;
     this.neighborList = neighborList;
     this.treasureList = treasureList;

@@ -21,6 +21,6 @@ public interface Dungeon {
    * @param treasure The percentage of caves with treasure expressed as an integer. Default is 20.
    * @return The dungeon built to specification represented as a 2 dimensional array.
    */
-  Dungeon makeDungeon(boolean wraps, int rows, int columns, int interconnect,
-                      int treasure);
+  DungeonImpl makeDungeon(boolean wraps, int rows, int columns, int interconnect,
+                      int treasure, DungeonImpl dungeon);
 }

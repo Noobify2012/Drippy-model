@@ -20,6 +20,9 @@ public class PlayerImpl implements Player {
    */
   @Override
   public void moveNorth() {
+    //verify player can move north
+    //reduce row by 1
+
 
   }
 
@@ -28,7 +31,8 @@ public class PlayerImpl implements Player {
    */
   @Override
   public void moveSouth() {
-
+    //verify player can move south
+    //increase row by 1
   }
 
   /**
@@ -36,6 +40,8 @@ public class PlayerImpl implements Player {
    */
   @Override
   public void moveEast() {
+    //verify player can move east
+    //reduce column by 1
 
   }
 
@@ -44,6 +50,8 @@ public class PlayerImpl implements Player {
    */
   @Override
   public void moveWest() {
+    //verify player can move west
+    //increase column by 1
 
   }
 }
