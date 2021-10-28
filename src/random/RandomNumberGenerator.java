@@ -12,7 +12,7 @@ public class RandomNumberGenerator {
   public RandomNumberGenerator(int min, int max, int seed, int listSize) {
     this.min = min;
     this.max = max;
-    this.seed = seed;
+    this.seed = 0;
     this.listSize = listSize;
 
     if (listSize <= 0) {
@@ -21,17 +21,23 @@ public class RandomNumberGenerator {
       throw new IllegalArgumentException("The minimum value cannot be equal to or greater than the"
               + " maximum value");
     } else if (listSize == 1) {
-      getRandomNumber(min, max, seed);
+      getRandomNumber();
     } else if (listSize > 1) {
       getRandomList(min, max, seed, listSize);
     }
   }
 
-  int getRandomNumber(int min, int max, int seed) {
-    return 0;
+  public int getRandomNumber() {
+    if (this.seed == 0) {
+      int returnInt = ((int) (Math.random() * ((this.max - this.min) + 1)) + this.min);
+      return returnInt;
+    } else {
+      int returnInt = 0;
+      return returnInt;
+    }
   }
 
-  ArrayList getRandomList(int min, int max, int seed, int listSize) {
+  public ArrayList getRandomList(int min, int max, int seed, int listSize) {
     ArrayList numList = new ArrayList();
     for (int i = 0; i < listSize; i++) {
       //generate random number

@@ -23,4 +23,6 @@ public interface Dungeon {
    */
   DungeonImpl makeDungeon(boolean wraps, int rows, int columns, int interconnect,
                       int treasure, DungeonImpl dungeon);
+
+  void getDungeon();
 }

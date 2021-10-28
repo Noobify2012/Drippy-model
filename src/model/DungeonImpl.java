@@ -1,7 +1,9 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
+
+import random.RandomNumberGenerator;
 
 /**
  * The implementation of the Dungeon interface.
@@ -15,20 +17,31 @@ public class DungeonImpl implements Dungeon {
   private int interconnect;
   private int treasure;
   private Cave[][] Gameboard;
+  private ArrayList<Edge> potEdgeList;
+  private ArrayList<Edge> leftOverEdge;
+  private ArrayList<Edge> finalEdgeList;
 
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
     //possible case for the builder pattern for this constructor using the make dungeon method
     // to abstract it
     //Cave = cave;
     //Location = location;
+    Cave[][] Gameboard = new Cave[rows][columns];
+    ArrayList edgeList = new ArrayList();
+    ArrayList<Edge> potEdgeList = new ArrayList();
+    ArrayList<Edge> leftOverEdge = new ArrayList<>();
+    ArrayList<Edge> finalEdgeList = new ArrayList<>();
+
     this.wraps = false;
     this.rows = rows;
     this.columns = columns;
     this.interconnect = 0;
     this.treasure = 20;
-    Cave[][] Gameboard = new Cave[rows][columns];
-    ArrayList edgeList = new ArrayList();
-    ArrayList potEdgeList = new ArrayList();
+    this.Gameboard = Gameboard;
+    this.potEdgeList = potEdgeList;
+    this.leftOverEdge = leftOverEdge;
+    this.finalEdgeList = finalEdgeList;
+
 
 
 
@@ -61,7 +74,7 @@ public class DungeonImpl implements Dungeon {
         ArrayList entrances = new ArrayList();
         ArrayList neighborList = new ArrayList();
         ArrayList treasureList = new ArrayList();
-        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index);
+        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index, index);
 
         Gameboard[r][c] = cave;
         if (!wraps) {
@@ -118,9 +131,10 @@ public class DungeonImpl implements Dungeon {
       }
     } else {
       //figure out wrapping logic for finding edges
+      //TODO - do logic for wrapping dungeon
     }
     System.out.print("\nstatus of edgeList: " + edgeList.toString());
-    System.out.print("\nstatus of potential edge list: " + potEdgeList);
+    System.out.print("\nstatus of potential edge list: " + potEdgeList.toString());
   }
 
 //  private ArrayList<Edge> addEdgesNonWrap() {
@@ -148,9 +162,23 @@ public class DungeonImpl implements Dungeon {
 
 
 
-  private void makeGameBoard() {
+  public void getDungeon() {
+    runKruscals(this.getGameBoard() , this.interconnect);
 
   }
+
+  private Cave[][] getGameBoard() {
+    return this.Gameboard;
+  }
+
+  private ArrayList<Edge> getPotEdgeList() {
+    return this.potEdgeList;
+  }
+
+  private ArrayList<Edge> getLeftOverEdge() {
+    return this.getLeftOverEdge();
+  }
+
 
   /**
    * This creates a dungeon that requires the specification of whether the dungeon should wrap or
@@ -196,7 +224,7 @@ public class DungeonImpl implements Dungeon {
         ArrayList entrances = new ArrayList();
         ArrayList neighborList = new ArrayList();
         ArrayList treasureList = new ArrayList();
-        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index);
+        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index, index);
         //Gameboard[r][c] = cave;
 //        if (r == 0 && c == 0) {
 //          neighborList.add((int) r + 1);
@@ -213,7 +241,63 @@ public class DungeonImpl implements Dungeon {
     return dungeon;
   }
 
-  private void runKruscals(){
+  private void runKruscals(Cave[][] gameboard, int interconnect) {
+    //start condition - every cave in own set
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
+    Random randGen = new Random(0);
+    boolean exitCond = false;
+    ArrayList<Integer> setList = new ArrayList<>();
+    for (int s = 0; s < rows * columns; s++) {
+      setList.add(s);
+    }
+    if (setList.size() - 1 != Gameboard[rows-1][columns-1].getIndex()) {
+      throw new IllegalArgumentException("the set list doesn't match the number of elements");
+    }
+    while (!exitCond) {
+      // grab random edge
+      int random = randGen.nextInt(this.getPotEdgeList().size());
+      //if they are in the same set check to see if this edge has already been called,
+      // if not add to left over list
+      if (this.potEdgeList.get(random).compareSets()) {
+        if (!this.leftOverEdge.contains(this.potEdgeList.get(random))) {
+          this.leftOverEdge.add(this.potEdgeList.get(random));
+        }
+      } else {
+        //if not in the same set
+        //add edge to final set
+        finalEdgeList.add(this.potEdgeList.get(random));
+        // save set number of right cave
+        int tempint = this.potEdgeList.get(random).getRightSet();
+        int newSetNum = this.potEdgeList.get(random).getLeftSet();
+        //loop through all members of that set and set to left set value
+        for (int r = 0; r < rows; r++) {
+          for (int c = 0; c < columns; c++) {
+            if (Gameboard[r][c].getSet() == tempint) {
+              Gameboard[r][c].adjSet(newSetNum);
+            }
+          }
+        }
+        //remove setnum from setList
+        setList.remove(tempint);
+
+        //check for single set
+        if (setList.size() == 1) {
+          exitCond = true;
+        }
+
+      }
+    }
+//    for (int s = 0; s < this.getPotEdgeList().size(); s++) {
+//      //get random number
+//      int random = rand.getRandomNumber();
+//      System.out.print("\nNext Random Number: " + random);
+//    }
+
+
+    //grab random edge, check if in same set as other node
+    //this.potEdgeList.get();
+
+    //
 
   }
 }

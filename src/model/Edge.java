@@ -3,7 +3,7 @@ package model;
 class Edge {
   private Cave cave1;
   private Cave cave2;
-  private boolean active;
+
   private Direction directionFromCave1;
   private Direction directionFromCave2;
 
@@ -11,7 +11,6 @@ class Edge {
     this.cave1 = cave1;
     this.cave2 = cave2;
     //TODO - Possibly Remove
-    this.active = false;
     this.directionFromCave1 = directionFromCave1;
     this.directionFromCave2 = directionFromCave2;
   }
@@ -26,11 +25,26 @@ class Edge {
     }
   }
 
-  void setActive() {
-    this.active = true;
+  boolean compareSets() {
+    if (this.cave1.getSet() == this.cave2.getSet()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  boolean checkActive(){
-    return this.active;
+  int getLeftSet() {
+    return this.cave1.getSet();
+  }
+
+  int getRightSet() {
+    return this.cave2.getSet();
+  }
+
+
+  @Override
+  public String toString() {
+    String returnString = cave1.getIndex() + "<========>" + cave2.getIndex();
+    return returnString;
   }
 }

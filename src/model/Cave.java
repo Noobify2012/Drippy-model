@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public class Cave extends AbstractLocation {
   private int index;
+  private int set;
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
-                 ArrayList treasureList, int index) {
+                 ArrayList treasureList, int index, int set) {
     super(new Point2D(row, column), entrances, neighborList, treasureList);
     this.index = index;
+    this.set = set;
     if (entrances.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
     }
@@ -30,9 +32,14 @@ public class Cave extends AbstractLocation {
     return this.index;
   }
 
-//  protected Cave getCave() {
-//    return this.
-//  }
+  protected int getSet() {
+    return this.set;
+  }
+
+  protected void adjSet(int set) {
+    this.set = set;
+  }
+
 
 
 }
