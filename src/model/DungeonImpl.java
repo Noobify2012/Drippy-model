@@ -35,8 +35,8 @@ public class DungeonImpl implements Dungeon {
     this.wraps = false;
     this.rows = rows;
     this.columns = columns;
-    this.interconnect = 0;
-    this.treasure = 20;
+    this.interconnect = interconnect;
+    this.treasure = treasure;
     this.Gameboard = Gameboard;
     this.potEdgeList = potEdgeList;
     this.leftOverEdge = leftOverEdge;
@@ -66,6 +66,22 @@ public class DungeonImpl implements Dungeon {
       //add wrapping edges to kruskals
     } else {
       //no wrapping edges
+    }
+
+    if (interconnect > 0 && !wraps) {
+      //forumla derived by Madhira Datta
+      int maxEdges = 2 * rows * columns - rows - columns;
+      if (interconnect > maxEdges -  (rows  * columns - 1)) {
+          throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
+                + " graph.");
+      }
+    } else if (interconnect > 0 && wraps) {
+      //forumla derived by Madhira Datta
+      int maxEdges = 2 * rows * columns;
+      if (interconnect > maxEdges) {
+        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
+                + " graph.");
+      }
     }
 
     int index = 0;
@@ -244,7 +260,7 @@ public class DungeonImpl implements Dungeon {
   private void runKruscals(Cave[][] gameboard, int interconnect) {
     //start condition - every cave in own set
     RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
-    Random randGen = new Random(0);
+    Random randGen = new Random(rand.getRandomNumber());
     boolean exitCond = false;
     ArrayList<Integer> setList = new ArrayList<>();
     for (int s = 0; s < rows * columns; s++) {
@@ -256,6 +272,8 @@ public class DungeonImpl implements Dungeon {
     while (!exitCond) {
       // grab random edge
       int random = randGen.nextInt(this.getPotEdgeList().size());
+      System.out.print("\nCurrent size of potEdgeList: " + this.getPotEdgeList().size());
+
       //if they are in the same set check to see if this edge has already been called,
       // if not add to left over list
       if (this.potEdgeList.get(random).compareSets()) {
@@ -266,9 +284,12 @@ public class DungeonImpl implements Dungeon {
         //if not in the same set
         //add edge to final set
         finalEdgeList.add(this.potEdgeList.get(random));
+
         // save set number of right cave
         int tempint = this.potEdgeList.get(random).getRightSet();
         int newSetNum = this.potEdgeList.get(random).getLeftSet();
+        //remove from potential edge list
+        this.potEdgeList.remove(random);
         //loop through all members of that set and set to left set value
         for (int r = 0; r < rows; r++) {
           for (int c = 0; c < columns; c++) {
@@ -278,11 +299,38 @@ public class DungeonImpl implements Dungeon {
           }
         }
         //remove setnum from setList
-        setList.remove(tempint);
+        if (setList.contains(tempint)) {
+          int removeInt = setList.indexOf(tempint);
+          setList.remove(setList.indexOf(tempint));
+          System.out.print("\nneed to remove: " + tempint + " the max index is: " + setList.size());
+        } else {
+          System.out.print("\ncouldn't remove: " + tempint);
+        }
 
         //check for single set
-        if (setList.size() == 1) {
+        if (setList.size() == 1 && interconnect == 0) {
           exitCond = true;
+          System.out.print("\nmade it to single set");
+          System.out.print("status of final edge list: " + finalEdgeList.toString());
+        } else if (setList.size() == 1 && interconnect > 0) {
+          for (int l = 0; l < this.potEdgeList.size(); l ++) {
+            if (!this.leftOverEdge.contains(this.potEdgeList.get(l))) {
+              this.leftOverEdge.add(this.potEdgeList.get(l));
+            }
+          }
+          for (int j = 0; j < interconnect; j++) {
+            if (leftOverEdge.size() <= 0) {
+                throw new IllegalStateException("Left over edge list is already empty");
+            } else {
+              int randomInt = randGen.nextInt(leftOverEdge.size());
+              finalEdgeList.add(leftOverEdge.get(randomInt));
+              leftOverEdge.remove(randomInt);
+            }
+
+          }
+          exitCond = true;
+          System.out.print("\nmade it to single set and added interconnectivity");
+          System.out.print("\nstatus of final edge list: " + finalEdgeList.toString());
         }
 
       }
