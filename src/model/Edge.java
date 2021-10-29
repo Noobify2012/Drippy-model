@@ -41,6 +41,19 @@ class Edge {
     return this.cave2.getSet();
   }
 
+  int getLeftIndex() {
+    return this.cave1.getIndex();
+  }
+
+  int getRightIndex() {
+    return this.cave2.getIndex();
+  }
+
+  void addNeighbors() {
+    this.cave1.addNeighbor(this.getRightIndex());
+    this.cave2.addNeighbor(this.getLeftIndex());
+  }
+
 
   @Override
   public String toString() {

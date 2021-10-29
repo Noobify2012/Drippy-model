@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import random.RandomNumberGenerator;
 
 /**
@@ -62,7 +61,7 @@ public class DungeonImpl implements Dungeon {
       throw new IllegalArgumentException("The interconnectivity cannot be less than 0");
     }
 
-    if(wraps) {
+    if (wraps) {
       //add wrapping edges to kruskals
     } else {
       //no wrapping edges
@@ -84,48 +83,21 @@ public class DungeonImpl implements Dungeon {
       }
     }
 
+    //construct caves
     int index = 0;
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
         ArrayList entrances = new ArrayList();
         ArrayList neighborList = new ArrayList();
         ArrayList treasureList = new ArrayList();
-        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index, index);
-
+        Cave cave = new Cave(r, c, entrances, neighborList, treasureList, index, index);
         Gameboard[r][c] = cave;
-        if (!wraps) {
-          if (c < columns - 1 && r < rows - 1) {
-            edgeList.add((c + 1)+ "," + (r));
-            System.out.print("\ncurrent index being added: " + index + " current column being added: "+ (c + 1)+"," + (r));
-            edgeList.add((c)+","+(r + 1));
-            System.out.print("\ncurrent index being added: " + index + " current row being added: "+ (c) +","+(r + 1));
-
-          } else if (c == columns -1 && r == rows - 1) {
-            //do nothing
-          } else if (c == columns - 1 && r <= rows - 1) {
-            edgeList.add( (c)+","+(r + 1));
-            System.out.print("\ncurrent index being added1: " + index + " current row being added: "+ (r + 1));
-
-          } else {
-            edgeList.add( (c+1)+","+(r));
-            System.out.print("\ncurrent index being added2: " + index + " current column being added: "+ (c + 1));
-          }
-        } else {
-          if (c != columns - 1 && r != rows - 1) {
-            edgeList.add(c + 1);
-            edgeList.add(r + 1);
-          } else if (c == columns - 1 && r != rows - 1) {
-            edgeList.add(r + 1);
-            edgeList.add(0);
-          } else if (c != columns - 1 && r == rows - 1) {
-            edgeList.add(c + 1);
-            edgeList.add(0);
-          }
-        }
-        System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave " + cave.getRow());
+        System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave "
+                + cave.getIndex());
         index++;
       }
     }
+    // build edges
     if (!wraps) {
       for (int r = 0; r < Gameboard.length; r++) {
         for (int c = 0; c < Gameboard.length; c++) {
@@ -147,40 +119,103 @@ public class DungeonImpl implements Dungeon {
       }
     } else {
       //figure out wrapping logic for finding edges
-      //TODO - do logic for wrapping dungeon
+      for (int r = 0; r < Gameboard.length; r++) {
+        for (int c = 0; c < Gameboard.length; c++) {
+          //case: not an edge node, add edge right, add edge down
+          if (c < columns - 1 && r < rows - 1) {
+            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            potEdgeList.add(edge);
+            System.out.print("\n0Edge added between caves:" + edge.toString());
+            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            potEdgeList.add(edge2);
+            System.out.print("\n1Edge added between caves:" + edge2.toString());
+            //case: bottom right edge, wrap right, wrap down
+          } else if (c == columns - 1 && r == rows - 1) {
+            Edge edge = new Edge(Gameboard[c][r], Gameboard[0][r]);
+            potEdgeList.add(edge);
+            System.out.print("\n2Edge added between caves:" + edge.toString());
+            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][0]);
+            potEdgeList.add(edge2);
+            System.out.print("\n3Edge added between caves:" + edge2.toString());
+
+            //case: right edge, not bottom
+          } else if (c == columns - 1 && r <= rows - 1) {
+            Edge edge = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            potEdgeList.add(edge);
+            System.out.print("\n4Edge added between caves:" + edge.toString());
+            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[0][r]);
+            potEdgeList.add(edge2);
+            System.out.print("\n5Edge added between caves:" + edge2.toString());
+          } else {
+            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            potEdgeList.add(edge);
+            System.out.print("\n6Edge added between caves:" + edge.toString());
+            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][0]);
+            potEdgeList.add(edge2);
+            System.out.print("\n7Edge added between caves:" + edge2.toString());
+          }
+        }
+      }
     }
-    System.out.print("\nstatus of edgeList: " + edgeList.toString());
+    //System.out.print("\nstatus of edgeList: " + edgeList.toString());
     System.out.print("\nstatus of potential edge list: " + potEdgeList.toString());
   }
-
-//  private ArrayList<Edge> addEdgesNonWrap() {
-//    ArrayList<Edge> edgeList = new ArrayList<>();
-//    for (int r = 0; r < Gameboard.length; r++) {
-//      for (int c = 0; c < Gameboard.length; c++) {
-//        if (c < columns - 1 && r < rows - 1) {
-//          Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
-//          edgeList.add(edge);
-//          Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
-//          edgeList.add(edge2);
-//        } else if (c == columns -1 && r == rows - 1) {
-//          //do nothing
-//        } else if (c == columns - 1 && r <= rows - 1) {
-//          Edge edge = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
-//          edgeList.add(edge);
-//        } else {
-//          Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
-//          edgeList.add(edge);
-//        }
-//      }
-//    }
-//    return edgeList;
-//  }
 
 
 
   public void getDungeon() {
-    runKruscals(this.getGameBoard() , this.interconnect);
+    runKruscals(this.getGameBoard(), this.interconnect);
+    getStartPoint();
+    findEndPoint();
+    findCaves();
 
+  }
+
+  private void getStartPoint() {
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, rows * columns - 1, 0,
+            1);
+    System.out.print("\nMax index is: " + (rows * columns - 1));
+    int startIndex = rand.getRandomNumber();
+    System.out.print("\nStarting point is index: " + startIndex);
+  }
+
+  private void findEndPoint() {
+    //TODO- figure this out
+    //find a valid end point
+  }
+
+  private void findCaves() {
+    ArrayList<Integer> caves = new ArrayList<>();
+    int treasureInt = 0;
+    //make list of caves, exclude tunnels
+    for (int r = 0; r < Gameboard.length; r++) {
+      for (int c = 0; c < Gameboard.length; c++) {
+        if (Gameboard[r][c].getNeighbors().size() != 2) {
+          caves.add(Gameboard[r][c].getIndex());
+        }
+      }
+    }
+    //calculate how many caves require treasure
+    if (this.treasure != 0) {
+      treasureInt = Math.round(caves.size() * (treasure / 100));
+      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0, 1);
+      for (int t = 0; t < treasureInt; t++) {
+        caves.get(rand.getRandomNumber());
+        Treasure a = TreasureEnum.RUBY.createTreasure();
+      }
+    }
+
+  }
+
+  private Cave findCaveByIndex(int index) {
+    for (int r = 0; r < Gameboard.length; r++) {
+      for (int c = 0; c < Gameboard.length; c++) {
+        if (Gameboard[r][c].getIndex() == index) {
+          return Gameboard[r][c];
+        }
+      }
+    }
+    throw new IllegalArgumentException("couldn't find cave index of " + index);
   }
 
   private Cave[][] getGameBoard() {
@@ -215,7 +250,8 @@ public class DungeonImpl implements Dungeon {
    * @return The dungeon built to specification represented as a 2 dimensional array.
    */
   @Override
-  public DungeonImpl makeDungeon(boolean wraps, int rows, int columns, int interconnect, int treasure, DungeonImpl dungeon) {
+  public DungeonImpl makeDungeon(boolean wraps, int rows, int columns, int interconnect,
+                                 int treasure, DungeonImpl dungeon) {
     if (rows < 1 || columns < 1) {
       throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
     } else if (rows == 1 && columns < 6 || rows < 6 && columns == 1) {
@@ -240,7 +276,7 @@ public class DungeonImpl implements Dungeon {
         ArrayList entrances = new ArrayList();
         ArrayList neighborList = new ArrayList();
         ArrayList treasureList = new ArrayList();
-        Cave cave = new Cave(r,c,entrances, neighborList, treasureList, index, index);
+        Cave cave = new Cave(r, c, entrances, neighborList, treasureList, index, index);
         //Gameboard[r][c] = cave;
 //        if (r == 0 && c == 0) {
 //          neighborList.add((int) r + 1);
@@ -249,7 +285,8 @@ public class DungeonImpl implements Dungeon {
 //          neighborList.add((int) r - 1);
 //          neighborList.add((int) c + 1);
 //        }
-        System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave " + cave.getRow());
+        System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave "
+                + cave.getRow());
 //        else if (c == 0
 //        Cave cave = new Cave(r,c,entrances,neighborList,treasureList);
       }
@@ -266,7 +303,7 @@ public class DungeonImpl implements Dungeon {
     for (int s = 0; s < rows * columns; s++) {
       setList.add(s);
     }
-    if (setList.size() - 1 != Gameboard[rows-1][columns-1].getIndex()) {
+    if (setList.size() - 1 != Gameboard[rows - 1][columns - 1].getIndex()) {
       throw new IllegalArgumentException("the set list doesn't match the number of elements");
     }
     while (!exitCond) {
@@ -283,6 +320,7 @@ public class DungeonImpl implements Dungeon {
       } else {
         //if not in the same set
         //add edge to final set
+        this.potEdgeList.get(random).addNeighbors();
         finalEdgeList.add(this.potEdgeList.get(random));
 
         // save set number of right cave
@@ -313,7 +351,8 @@ public class DungeonImpl implements Dungeon {
           System.out.print("\nmade it to single set");
           System.out.print("status of final edge list: " + finalEdgeList.toString());
         } else if (setList.size() == 1 && interconnect > 0) {
-          for (int l = 0; l < this.potEdgeList.size(); l ++) {
+          //dump edges into single list
+          for (int l = 0; l < this.potEdgeList.size(); l++) {
             if (!this.leftOverEdge.contains(this.potEdgeList.get(l))) {
               this.leftOverEdge.add(this.potEdgeList.get(l));
             }
@@ -324,6 +363,7 @@ public class DungeonImpl implements Dungeon {
             } else {
               int randomInt = randGen.nextInt(leftOverEdge.size());
               finalEdgeList.add(leftOverEdge.get(randomInt));
+              leftOverEdge.get(randomInt).addNeighbors();
               leftOverEdge.remove(randomInt);
             }
 
@@ -335,17 +375,6 @@ public class DungeonImpl implements Dungeon {
 
       }
     }
-//    for (int s = 0; s < this.getPotEdgeList().size(); s++) {
-//      //get random number
-//      int random = rand.getRandomNumber();
-//      System.out.print("\nNext Random Number: " + random);
-//    }
-
-
-    //grab random edge, check if in same set as other node
-    //this.potEdgeList.get();
-
-    //
-
+    System.out.print("Kruskals complete");
   }
 }
