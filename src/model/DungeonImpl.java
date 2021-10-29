@@ -167,9 +167,13 @@ public class DungeonImpl implements Dungeon {
 
 
   public void getDungeon() {
+    //runs Kruscals, adds interconnectivity
     runKruscals(this.getGameBoard(), this.interconnect);
+    //generates a start point by index
     getStartPoint();
+    //finds a viable end point
     findEndPoint();
+    //finds caves for adding treasure
     findCaves();
 
   }
