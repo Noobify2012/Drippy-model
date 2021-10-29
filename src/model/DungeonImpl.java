@@ -103,20 +103,24 @@ public class DungeonImpl implements Dungeon {
         for (int c = 0; c < columns; c++) {
           //case for nodes that aren't on far edge
           if (c < columns - 1 && r < rows - 1) {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potEdgeList.add(edge);
-            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            System.out.print("\nadded edge 1 " + edge.toString());
+            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potEdgeList.add(edge2);
+            System.out.print("\nadded edge 2 " + edge2.toString());
             //bottom right hand corner, opposite origin
           } else if (c == columns - 1 && r == rows - 1) {
             //do nothing
             //max column, co
           } else if (c == columns - 1 && r <= rows - 1) {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potEdgeList.add(edge);
+            System.out.print("\nadded edge 3 " + edge.toString());
           } else {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potEdgeList.add(edge);
+            System.out.print("\nadded edge 4 " + edge.toString());
           }
         }
       }
@@ -126,34 +130,34 @@ public class DungeonImpl implements Dungeon {
         for (int c = 0; c < columns; c++) {
           //case: not an edge node, add edge right, add edge down
           if (c < columns - 1 && r < rows - 1) {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potEdgeList.add(edge);
             System.out.print("\n0Edge added between caves:" + edge.toString());
-            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potEdgeList.add(edge2);
             System.out.print("\n1Edge added between caves:" + edge2.toString());
             //case: bottom right edge, wrap right, wrap down
           } else if (c == columns - 1 && r == rows - 1) {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[0][r]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[0][c]);
             potEdgeList.add(edge);
             System.out.print("\n2Edge added between caves:" + edge.toString());
-            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][0]);
+            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][0]);
             potEdgeList.add(edge2);
             System.out.print("\n3Edge added between caves:" + edge2.toString());
 
             //case: right edge, not bottom
           } else if (c == columns - 1 && r <= rows - 1) {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potEdgeList.add(edge);
             System.out.print("\n4Edge added between caves:" + edge.toString());
-            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[0][r]);
+            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][0]);
             potEdgeList.add(edge2);
             System.out.print("\n5Edge added between caves:" + edge2.toString());
           } else {
-            Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
+            Edge edge = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potEdgeList.add(edge);
             System.out.print("\n6Edge added between caves:" + edge.toString());
-            Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][0]);
+            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[0][c]);
             potEdgeList.add(edge2);
             System.out.print("\n7Edge added between caves:" + edge2.toString());
           }
@@ -162,6 +166,8 @@ public class DungeonImpl implements Dungeon {
     }
     //System.out.print("\nstatus of edgeList: " + edgeList.toString());
     System.out.print("\nstatus of potential edge list: " + potEdgeList.toString());
+
+    getDungeon();
   }
 
 
@@ -174,7 +180,7 @@ public class DungeonImpl implements Dungeon {
     //finds a viable end point
     findEndPoint();
     //finds caves for adding treasure
-    findCaves();
+    //findCaves();
 
   }
 
