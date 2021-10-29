@@ -99,15 +99,18 @@ public class DungeonImpl implements Dungeon {
     }
     // build edges
     if (!wraps) {
-      for (int r = 0; r < Gameboard.length; r++) {
-        for (int c = 0; c < Gameboard.length; c++) {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < columns; c++) {
+          //case for nodes that aren't on far edge
           if (c < columns - 1 && r < rows - 1) {
             Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
             potEdgeList.add(edge);
             Edge edge2 = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
             potEdgeList.add(edge2);
+            //bottom right hand corner, opposite origin
           } else if (c == columns - 1 && r == rows - 1) {
             //do nothing
+            //max column, co
           } else if (c == columns - 1 && r <= rows - 1) {
             Edge edge = new Edge(Gameboard[c][r], Gameboard[c][r + 1]);
             potEdgeList.add(edge);
@@ -119,8 +122,8 @@ public class DungeonImpl implements Dungeon {
       }
     } else {
       //figure out wrapping logic for finding edges
-      for (int r = 0; r < Gameboard.length; r++) {
-        for (int c = 0; c < Gameboard.length; c++) {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < columns; c++) {
           //case: not an edge node, add edge right, add edge down
           if (c < columns - 1 && r < rows - 1) {
             Edge edge = new Edge(Gameboard[c][r], Gameboard[c + 1][r]);
@@ -195,13 +198,14 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
+    System.out.print("\nList of Caves: " + caves);
     //calculate how many caves require treasure
     if (this.treasure != 0) {
-      treasureInt = Math.round(caves.size() * (treasure / 100));
+      int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
       RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0, 1);
-      for (int t = 0; t < treasureInt; t++) {
+      for (int t = 0; t < treasCaveNum; t++) {
         caves.get(rand.getRandomNumber());
-        Treasure a = TreasureEnum.RUBY.createTreasure();
+//        Treasure a = TreasureEnum.RUBY.createTreasure();
       }
     }
 
