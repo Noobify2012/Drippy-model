@@ -1,5 +1,6 @@
 package model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import random.RandomNumberGenerator;
@@ -20,6 +21,15 @@ public class DungeonImpl implements Dungeon {
   private ArrayList<Edge> leftOverEdge;
   private ArrayList<Edge> finalEdgeList;
 
+  /**This creates a dungeon that requires the specification of whether the dungeon should wrap or not. How many rows and columns there should be specified as integers. The degree of interconnectivity(default is 0) or how many paths between nodes should there be. An interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above that is an additional edge/connection added to the map. Finally, what percentage of caves should have treasure in it. The default is 20%. Caves are defined as having 1, 3, or 4 entrances. Tunnels only have 2 entrances and do not have treasure.
+          Params:
+  wraps – A boolean which determines if a dungeon wraps its edges around to the other side.
+  rows – The number of rows in the dungeon as an integer.
+  columns – The number of columns in the dungeon as an integer.
+  interconnect – The level of interconnectivity expressed as an integer. Default is 0.
+  treasure – The percentage of caves with treasure expressed as an integer. Default is 20.
+  Returns:
+  The dungeon built to specification represented as a 2 dimensional array.**/
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
     //possible case for the builder pattern for this constructor using the make dungeon method
     // to abstract it
@@ -174,35 +184,73 @@ public class DungeonImpl implements Dungeon {
 
   public void getDungeon() {
     //runs Kruscals, adds interconnectivity
-    runKruscals(this.getGameBoard(), this.interconnect);
+    runKruscals();
     //generates a start point by index
-    getStartPoint();
     //finds a viable end point
-    findEndPoint();
-    //finds caves for adding treasure
-    //findCaves();
+    findEndPoint(getStartPoint(getCavesByIndex()));
+    //finds caves and adds Treasure
+    findCaves(getCavesByIndex());
 
   }
 
-  private void getStartPoint() {
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, rows * columns - 1, 0,
+  private int getStartPoint(ArrayList<Integer> caves) {
+
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
             1);
     System.out.print("\nMax index is: " + (rows * columns - 1));
-    int startIndex = rand.getRandomNumber();
+    int startIndex = caves.get(rand.getRandomNumber());
     System.out.print("\nStarting point is index: " + startIndex);
+    return startIndex;
   }
 
-  private void findEndPoint() {
+  //TODO - find out end point, search is looping back on self or crashing
+  private void findEndPoint(int startIndex) {
+    ArrayList<Integer> nonViable = new ArrayList<>();
+    ArrayList<Integer> viable = new ArrayList<>();
+    ArrayList<Integer> allCaves = getCavesByIndex();
+    ArrayList<Integer> listToCheck = getCavesByIndex();
+    nonViable.add(startIndex);
+    if (findCaveByIndex(startIndex).getNeighbors().size() != 0) {
+      for (int i = 0; i < findCaveByIndex(startIndex).getNeighbors().size(); i++) {
+        nonViable.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+        listToCheck.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+        System.out.print("\nNon-viable indexes: " + nonViable.toString());
+      }
+    } else {
+      throw new IllegalStateException("Start Node has no neighbors.");
+    }
+
+    int pathCounter = 1;
+    System.out.print("\nStatus of nonviable table: " + nonViable);
+    //every cave minus the start point needs to be checked
+    for (int d = 0; d <= 3; d++) {
+      //get children of people in list
+      for (int s = 0; s < nonViable.size(); s++) {
+        ArrayList<Integer> tempList = findCaveByIndex(nonViable.get(s)).getNeighbors();
+        System.out.print("\nStatus of temp-list: " + tempList);
+
+//        for (int a = 0; a < tempList.size(); a++) {
+//          nonViable.add(tempList.get(a));
+//        }
+      }
+    }
+
+    System.out.print("Status of non-viable list: " + nonViable);
+
+
+    //build index = 1
+    // go to neighbors of starting node
+    //add those neighbors to non-viable list do this until index hits 5,
+    // everything beyond that goes onto viable list
     //TODO- figure this out
     //find a valid end point
   }
 
-  private void findCaves() {
-    ArrayList<Integer> caves = new ArrayList<>();
+  private void findCaves(ArrayList<Integer> caves) {
     int treasureInt = 0;
     //make list of caves, exclude tunnels
-    for (int r = 0; r < Gameboard.length; r++) {
-      for (int c = 0; c < Gameboard.length; c++) {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < columns; c++) {
         if (Gameboard[r][c].getNeighbors().size() != 2) {
           caves.add(Gameboard[r][c].getIndex());
         }
@@ -212,9 +260,27 @@ public class DungeonImpl implements Dungeon {
     //calculate how many caves require treasure
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
+      System.out.print("\nNumber of caves that need treasure: " + treasCaveNum);
       RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0, 1);
+      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 0, 1);
+      TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
       for (int t = 0; t < treasCaveNum; t++) {
-        caves.get(rand.getRandomNumber());
+        int treasureRand = rand2.getRandomNumber();
+        if (treasureRand == 0 ) {
+          for(int r = 0; r <= treasureRand + 1; r++) {
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
+          }
+        } else if (treasureRand == 1 ) {
+          for (int r = 0; r <= treasureRand + 1; r++) {
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
+          }
+        } else {
+          for (int r = 0; r <= treasureRand + 1; r++) {
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
+          }
+        }
+
+
 //        Treasure a = TreasureEnum.RUBY.createTreasure();
       }
     }
@@ -222,8 +288,8 @@ public class DungeonImpl implements Dungeon {
   }
 
   private Cave findCaveByIndex(int index) {
-    for (int r = 0; r < Gameboard.length; r++) {
-      for (int c = 0; c < Gameboard.length; c++) {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < columns; c++) {
         if (Gameboard[r][c].getIndex() == index) {
           return Gameboard[r][c];
         }
@@ -244,71 +310,21 @@ public class DungeonImpl implements Dungeon {
     return this.getLeftOverEdge();
   }
 
-
-  /**
-   * This creates a dungeon that requires the specification of whether the dungeon should wrap or
-   * not. How many rows and columns there should be specified as integers. The degree of
-   * interconnectivity(default is 0) or how many paths between nodes should there be. An
-   * interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above
-   * that is an additional edge/connection added to the map. Finally, what percentage of caves
-   * should have treasure in it. The default is 20%. Caves are defined as having 1, 3, or 4
-   * entrances. Tunnels only have 2 entrances and do not have treasure.
-   *
-   * @param wraps        A boolean which determines if a dungeon wraps its edges around to the other
-   *                     side.
-   * @param rows         The number of rows in the dungeon as an integer.
-   * @param columns      The number of columns in the dungeon as an integer.
-   * @param interconnect The level of interconnectivity expressed as an integer. Default is 0.
-   * @param treasure     The percentage of caves with treasure expressed as an integer. Default is
-   *                     20.
-   * @return The dungeon built to specification represented as a 2 dimensional array.
-   */
-  @Override
-  public DungeonImpl makeDungeon(boolean wraps, int rows, int columns, int interconnect,
-                                 int treasure, DungeonImpl dungeon) {
-    if (rows < 1 || columns < 1) {
-      throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
-    } else if (rows == 1 && columns < 6 || rows < 6 && columns == 1) {
-      throw new IllegalArgumentException("You must have at least 6 rows or columns if the other "
-              + "is 1.");
-    } else if (rows == 2 && columns < 3 || rows < 3 && columns == 2) {
-      throw new IllegalArgumentException("You must have at least 6 nodes in the graph.");
-    }
-
-    if (treasure < 20) {
-      throw new IllegalArgumentException("You must have at least 20% treasure.");
-    }
-
-    if (interconnect < 0) {
-      throw new IllegalArgumentException("The interconnectivity cannot be less than 0");
-    }
-
-    ArrayList edgeList = new ArrayList();
-    int index = 0;
+  private ArrayList<Integer> getCavesByIndex() {
+    ArrayList<Integer> caves = new ArrayList<>();
+    //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        ArrayList entrances = new ArrayList();
-        ArrayList neighborList = new ArrayList();
-        ArrayList treasureList = new ArrayList();
-        Cave cave = new Cave(r, c, entrances, neighborList, treasureList, index, index);
-        //Gameboard[r][c] = cave;
-//        if (r == 0 && c == 0) {
-//          neighborList.add((int) r + 1);
-//          neighborList.add((int) c + 1);
-//        } else if (r == 0 && c == columns - 1) {
-//          neighborList.add((int) r - 1);
-//          neighborList.add((int) c + 1);
-//        }
-        System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave "
-                + cave.getRow());
-//        else if (c == 0
-//        Cave cave = new Cave(r,c,entrances,neighborList,treasureList);
+        if (Gameboard[r][c].getNeighbors().size() != 2) {
+          caves.add(Gameboard[r][c].getIndex());
+        }
       }
     }
-    return dungeon;
+    return caves;
   }
 
-  private void runKruscals(Cave[][] gameboard, int interconnect) {
+
+  private void runKruscals() {
     //start condition - every cave in own set
     RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotEdgeList().size(), 0, 1);
     Random randGen = new Random(rand.getRandomNumber());

@@ -52,4 +52,8 @@ public class Cave extends AbstractLocation {
   ArrayList getNeighbors() {
     return this.neighborList;
   }
+
+  void addTreasure(Treasure treasure) {
+    this.treasureList.add(treasure);
+  }
 }
