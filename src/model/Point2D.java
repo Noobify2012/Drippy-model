@@ -1,6 +1,10 @@
 package model;
 
 
+/**
+ * The representation of a location in 2D space, this is used to identify the caves by row and
+ * column.
+ */
 public class Point2D {
   private int row;
   private int column;

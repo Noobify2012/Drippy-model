@@ -14,6 +14,9 @@ public class PlayerImpl implements Player {
   private ArrayList<Direction> directions;
   private ArrayList<Treasure> currentTreasure;
 
+  /**
+   * The constructor of a player.
+   */
   public PlayerImpl() {
     this.playerLocation = playerLocation;
     this.treasureList = treasureList;
@@ -29,7 +32,8 @@ public class PlayerImpl implements Player {
    *                  to.
    * @param curTreasure the treasure in the cave of associated index.
    */
-  private void updatePlayerLocation(int index, ArrayList<Direction> directions, ArrayList<Treasure> curTreasure) {
+  private void updatePlayerLocation(int index, ArrayList<Direction> directions,
+                                    ArrayList<Treasure> curTreasure) {
     this.playerLocation = index;
     this.directions = directions;
     this.currentTreasure = curTreasure;
@@ -91,7 +95,7 @@ public class PlayerImpl implements Player {
    */
   @Override
   public String getPlayerStatus() {
-    String treasureString ="";
+    String treasureString = "";
     String directionString = "";
     String curTreasureString = "";
     if (this.treasureList == null) {
@@ -133,7 +137,8 @@ public class PlayerImpl implements Player {
    * @param treasureInCave the treasure in the cave where the player enters the dungeon.
    * @param directions the directions the player can go from the start point.
    */
-  public void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave, ArrayList<Direction> directions) {
+  public void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
+                           ArrayList<Direction> directions) {
     updatePlayerLocation(caveIndex, directions, treasureInCave);
   }
 }

@@ -14,9 +14,6 @@ public class Driver {
     System.out.print("\n" + player.getPlayerStatus());
 
     int testInt = test.getPlayerStartPoint();
-    //test.getDungeon();
-//    DungeonImpl test2 = new DungeonImpl(false, 4,4,0,20);
-//    test2.getDungeon();
 
   }
 }

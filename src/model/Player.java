@@ -42,6 +42,7 @@ public interface Player {
    * @param treasureInCave the treasure in the cave where the player enters the dungeon.
    * @param possibleDirection the directions the player can go from the start point.
    */
-  void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave, ArrayList<Direction> possibleDirection);
+  void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
+                    ArrayList<Direction> possibleDirection);
 
 }

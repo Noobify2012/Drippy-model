@@ -19,7 +19,8 @@ class Edge {
     } else if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() == 1) {
       directionToCave2 = Direction.WEST;
       directionToCave1 = Direction.EAST;
-    } else if (cave1.getRow() - cave2.getRow() == -1 && cave1.getColumn() - cave2.getColumn() == 0) {
+    } else if (cave1.getRow() - cave2.getRow() == -1 && cave1.getColumn()
+            - cave2.getColumn() == 0) {
       directionToCave2 = Direction.SOUTH;
       directionToCave1 = Direction.NORTH;
     } else {
