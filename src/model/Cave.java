@@ -95,4 +95,15 @@ public class Cave extends AbstractLocation {
   ArrayList<Treasure> getTreasureList() {
     return this.treasureList;
   }
+
+  ArrayList<Treasure> getTreasureFromCave() {
+    ArrayList<Treasure> treasureForPlayer = new ArrayList<>();
+    if (!this.treasureList.isEmpty()) {
+      for (int i = 0; i < treasureList.size(); i ++) {
+        treasureForPlayer.add(i, this.treasureList.get(i));
+      }
+    }
+    this.treasureList = null;
+    return treasureForPlayer;
+  }
 }

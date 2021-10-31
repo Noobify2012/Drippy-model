@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+
+import driver.Driver;
 import model.DungeonImpl;
 
 
@@ -36,7 +38,11 @@ public class PlayerImpl implements Player {
                                     ArrayList<Treasure> curTreasure) {
     this.playerLocation = index;
     this.directions = directions;
-    this.currentTreasure = curTreasure;
+    if (curTreasure.size() >= 1) {
+      for (int i = 0; i < curTreasure.size(); i++) {
+        this.currentTreasure.add(curTreasure.get(i));
+      }
+    }
     //update the location after a move
     //this.playerLocation =
   }
@@ -63,9 +69,12 @@ public class PlayerImpl implements Player {
    * The player moves east.
    */
   @Override
-  public void moveEast() {
+  public void moveEast(int index, ArrayList<Direction> directions,
+                       ArrayList<Treasure> curTreasure) {
     //verify player can move east
     //reduce column by 1
+
+    updatePlayerLocation(index, directions, curTreasure);
 
   }
 
@@ -94,7 +103,7 @@ public class PlayerImpl implements Player {
    * @return the string containing all the pertinent player and cave information.
    */
   @Override
-  public String getPlayerStatus() {
+  public void getPlayerStatus() {
     String treasureString = "";
     String directionString = "";
     String curTreasureString = "";
@@ -112,7 +121,7 @@ public class PlayerImpl implements Player {
       }
     }
 
-    if (currentTreasure.size() == 0) {
+    if (this.currentTreasure == null) {
       curTreasureString = "no treasure in this cave";
     } else if (currentTreasure.size() == 1) {
       curTreasureString = "This" + currentTreasure.get(0).toString();
@@ -126,7 +135,8 @@ public class PlayerImpl implements Player {
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
             + "and there is " + treasureString + " in this cave.";
-    return playerString;
+    Driver.printHelper(playerString);
+//    return playerString;
   }
 
 

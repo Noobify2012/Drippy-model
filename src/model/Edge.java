@@ -29,13 +29,13 @@ class Edge {
     }
   }
 
-  public Direction getDirection(Cave cave) {
-    if (cave == cave1) {
-      return directionToCave1;
-    } else if (cave == cave2) {
+  public Direction getDirection(Cave cave1, Cave cave2) {
+    if (cave1 == this.cave1 && cave2 == this.cave2) {
       return directionToCave2;
+    } else if (cave1 == this.cave2 && cave1 == this.cave1) {
+      return directionToCave1;
     } else {
-      throw new IllegalArgumentException(cave + "is not associated with this edge");
+      throw new IllegalArgumentException(cave1 + " or " + cave2 + "is not associated with this edge");
     }
   }
 

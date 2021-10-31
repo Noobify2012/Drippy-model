@@ -20,7 +20,8 @@ public interface Player {
   /**
    * The player moves east.
    */
-  void moveEast();
+  void moveEast(int index, ArrayList<Direction> directions,
+                ArrayList<Treasure> curTreasure);
 
   /**
    * The player moves west.
@@ -33,7 +34,7 @@ public interface Player {
    *
    * @return the string containing all the pertinent player and cave information.
    */
-  String getPlayerStatus();
+  void getPlayerStatus();
 
   /**This updates the players location based on the index of the start point, the treasure in the
    * cave that the player enters, and the directions the player can go from that start location.
@@ -44,5 +45,4 @@ public interface Player {
    */
   void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
                     ArrayList<Direction> possibleDirection);
-
 }

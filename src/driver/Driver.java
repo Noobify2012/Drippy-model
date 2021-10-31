@@ -8,12 +8,14 @@ import model.PlayerImpl;
 public class Driver {
 
   public static void main(String[] args) {
-    System.out.print("This is my main method");
     Player player = new PlayerImpl();
-    DungeonImpl test = new DungeonImpl(true, 4, 3, 0, 20, player);
-    System.out.print("\n" + player.getPlayerStatus());
+    DungeonImpl test = new DungeonImpl(false, 5, 10, 0, 20, player);
+    //System.out.print("\n" + player.getPlayerStatus());
+    //int testInt = test.getPlayerStartPoint();
 
-    int testInt = test.getPlayerStartPoint();
+  }
 
+  public static void printHelper(String printString) {
+    System.out.println(printString);
   }
 }
