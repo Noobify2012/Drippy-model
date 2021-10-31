@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import random.RandomNumberGenerator;
@@ -9,8 +8,6 @@ import random.RandomNumberGenerator;
  * The implementation of the Dungeon interface.
  */
 public class DungeonImpl implements Dungeon {
-  //private final Object Cave;
-  //private final Object Location;
   private boolean wraps;
   private int rows;
   private int columns;
@@ -20,17 +17,25 @@ public class DungeonImpl implements Dungeon {
   private ArrayList<Edge> potEdgeList;
   private ArrayList<Edge> leftOverEdge;
   private ArrayList<Edge> finalEdgeList;
+  private int startPoint;
+  private Player player;
 
-  /**This creates a dungeon that requires the specification of whether the dungeon should wrap or not. How many rows and columns there should be specified as integers. The degree of interconnectivity(default is 0) or how many paths between nodes should there be. An interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above that is an additional edge/connection added to the map. Finally, what percentage of caves should have treasure in it. The default is 20%. Caves are defined as having 1, 3, or 4 entrances. Tunnels only have 2 entrances and do not have treasure.
-          Params:
-  wraps – A boolean which determines if a dungeon wraps its edges around to the other side.
-  rows – The number of rows in the dungeon as an integer.
-  columns – The number of columns in the dungeon as an integer.
-  interconnect – The level of interconnectivity expressed as an integer. Default is 0.
-  treasure – The percentage of caves with treasure expressed as an integer. Default is 20.
-  Returns:
-  The dungeon built to specification represented as a 2 dimensional array.**/
-  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
+  /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
+   * not. How many rows and columns there should be specified as integers. The degree of
+   * interconnectivity(default is 0) or how many paths between nodes should there be. An
+   * interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above
+   * that is an additional edge/connection added to the map. Finally, what percentage of caves
+   * should have treasure in it. The default is 20%. Caves are defined as having 1, 3, or 4
+   * entrances. Tunnels only have 2 entrances and do not have treasure.
+   Params:
+   wraps – A boolean which determines if a dungeon wraps its edges around to the other side.
+   rows – The number of rows in the dungeon as an integer.
+   columns – The number of columns in the dungeon as an integer.
+   interconnect – The level of interconnectivity expressed as an integer. Default is 0.
+   treasure – The percentage of caves with treasure expressed as an integer. Default is 20.
+   Returns:
+   The dungeon built to specification represented as a 2 dimensional array.**/
+  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure, Player player) {
     //possible case for the builder pattern for this constructor using the make dungeon method
     // to abstract it
     //Cave = cave;
@@ -50,6 +55,8 @@ public class DungeonImpl implements Dungeon {
     this.potEdgeList = potEdgeList;
     this.leftOverEdge = leftOverEdge;
     this.finalEdgeList = finalEdgeList;
+    this.startPoint = 0;
+    this.player = player;
 
 
 
@@ -81,7 +88,7 @@ public class DungeonImpl implements Dungeon {
       //forumla derived by Madhira Datta
       int maxEdges = 2 * rows * columns - rows - columns;
       if (interconnect > maxEdges -  (rows  * columns - 1)) {
-          throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
+        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
                 + " graph.");
       }
     } else if (interconnect > 0 && wraps) {
@@ -182,15 +189,41 @@ public class DungeonImpl implements Dungeon {
 
 
 
-  public void getDungeon() {
+  void getDungeon() {
     //runs Kruscals, adds interconnectivity
     runKruscals();
     //generates a start point by index
+    this.startPoint = getStartPoint(getCavesByIndex());
     //finds a viable end point
-    findEndPoint(getStartPoint(getCavesByIndex()));
+    int endPoint = findEndPoint(this.startPoint);
     //finds caves and adds Treasure
     findCaves(getCavesByIndex());
 
+    setUpPlayer();
+
+  }
+
+  private void setUpPlayer() {
+    //place the player in the dungeon at the cave index
+    player.enterDungeon(this.startPoint, findCaveByIndex(this.startPoint).getTreasureList(),
+            getPossibleDirection(this.startPoint));
+
+  }
+
+  private ArrayList<Direction> getPossibleDirection(int index) {
+    ArrayList<Direction> tempArray = new ArrayList<>();
+    for (int i = 0; i < finalEdgeList.size(); i++) {
+      if (finalEdgeList.get(i).getLeftIndex() == index) {
+        if (!tempArray.contains(finalEdgeList.get(i).getDirectionToCave2())) {
+          tempArray.add(finalEdgeList.get(i).getDirectionToCave2());
+        }
+      } else if (finalEdgeList.get(i).getRightIndex() == index) {
+        if (!tempArray.contains(finalEdgeList.get(i).getDirectionToCave1())) {
+          tempArray.add(finalEdgeList.get(i).getDirectionToCave1());
+        }
+      }
+    }
+    return tempArray;
   }
 
   private int getStartPoint(ArrayList<Integer> caves) {
@@ -203,47 +236,95 @@ public class DungeonImpl implements Dungeon {
     return startIndex;
   }
 
-  //TODO - find out end point, search is looping back on self or crashing
-  private void findEndPoint(int startIndex) {
+  private int findEndPoint(int startIndex) {
     ArrayList<Integer> nonViable = new ArrayList<>();
     ArrayList<Integer> viable = new ArrayList<>();
     ArrayList<Integer> allCaves = getCavesByIndex();
-    ArrayList<Integer> listToCheck = getCavesByIndex();
+    ArrayList<Integer> listToCheck = new ArrayList<>();
+    int endPoint = 0;
+
+    //add start index to list of things to check and those that can't be an end point
     nonViable.add(startIndex);
+    listToCheck.add(startIndex);
+    //check for incomplete graph
     if (findCaveByIndex(startIndex).getNeighbors().size() != 0) {
+//      for (int z = 0; z < 3; z++) {
+      //loop throught the list of neighbors of the start index
       for (int i = 0; i < findCaveByIndex(startIndex).getNeighbors().size(); i++) {
-        nonViable.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
-        listToCheck.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
-        System.out.print("\nNon-viable indexes: " + nonViable.toString());
+        //check that we already haven't seen the current node
+        if (!(nonViable.contains(findCaveByIndex(startIndex).getNeighbors().get(i)))) {
+          System.out.print("\nAdding this index to nonviable and list to check: "
+                  + (int) findCaveByIndex(startIndex).getNeighbors().get(i));
+          //add current neighbor node to list of indexes to check and nonviable
+          nonViable.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+          listToCheck.add((int) findCaveByIndex(startIndex).getNeighbors().get(i));
+          System.out.print("\nNon-viable indexes: " + nonViable.toString());
+          System.out.print("\nList to Check indexes: " + listToCheck.toString());
+
+        }
       }
+      //remove node we just checked from list of nodes to check
+      System.out.print("\nNon-viable indexes after 1 iteration: " + nonViable.toString());
+      listToCheck.remove(0);
+      System.out.print("\nList to check indexes after removing first item: "
+              + listToCheck.toString());
+      //loop 3 times
+      for (int y = 0; y < 3; y++) {
+        //list size at time of iteration, not to keep looping through more stuff
+        int temp = listToCheck.size();
+        for (int c = 0; c < temp; c++) {
+          //grab next value in list to check
+          int tempInt = listToCheck.get(c);
+          ArrayList<Integer> tempList = findCaveByIndex(tempInt).getNeighbors();
+          //checks to see if next element down has children
+          if (tempList.size() > 1) {
+            //if it does have children add them to the lists
+            for (int a = 0; a < tempList.size(); a++) {
+              if (!(nonViable.contains((int) findCaveByIndex(tempInt).getNeighbors().get(a)))) {
+                nonViable.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+                listToCheck.add((int) findCaveByIndex(tempInt).getNeighbors().get(a));
+              }
+            }
+          }
+          //add current neighbor node to list of indexes to check and nonviable
+          System.out.print("\nNon-viable indexes after add: " + nonViable.toString());
+          System.out.print("\nList to Check indexes after add: " + listToCheck.toString());
+        }
+        for (int r = 0; r < temp - 1; r++) {
+          //TODO - gets index out of bounds, why?
+          System.out.print("Trying to remove index: " + r + " from list to check: " + listToCheck);
+          listToCheck.remove(r);
+        }
+        System.out.print("\nNon-viable indexes after remove: " + nonViable.toString());
+        System.out.print("\nList to Check indexes after remove: " + listToCheck.toString());
+      }
+
+      System.out.print("\nNon-viable indexes after final: " + nonViable.toString());
+      System.out.print("\nList to Check indexes after final: " + listToCheck.toString());
     } else {
       throw new IllegalStateException("Start Node has no neighbors.");
     }
-
-    int pathCounter = 1;
-    System.out.print("\nStatus of nonviable table: " + nonViable);
-    //every cave minus the start point needs to be checked
-    for (int d = 0; d <= 3; d++) {
-      //get children of people in list
-      for (int s = 0; s < nonViable.size(); s++) {
-        ArrayList<Integer> tempList = findCaveByIndex(nonViable.get(s)).getNeighbors();
-        System.out.print("\nStatus of temp-list: " + tempList);
-
-//        for (int a = 0; a < tempList.size(); a++) {
-//          nonViable.add(tempList.get(a));
-//        }
+    //compare list of non-viable vs total list
+    if (nonViable.size() == (rows * columns)) {
+      throw new IllegalStateException("There are no viable end points, try increasing the size of "
+              + "your dungeon");
+    } else {
+      for (int t = 0; t < allCaves.size(); t++) {
+        if (!nonViable.contains(allCaves.get(t))) {
+          viable.add(allCaves.get(t));
+          System.out.print("\nViable end points: " + viable.toString());
+        }
       }
+      if (viable.size() != 1) {
+        RandomNumberGenerator rand = new RandomNumberGenerator(0, viable.size() - 1 , 0, 1);
+        int endRand = rand.getRandomNumber();
+        endPoint = viable.get(endRand);
+      } else {
+        endPoint = viable.get(0);
+      }
+      System.out.print("\nThe end point is: " + endPoint);
     }
-
-    System.out.print("Status of non-viable list: " + nonViable);
-
-
-    //build index = 1
-    // go to neighbors of starting node
-    //add those neighbors to non-viable list do this until index hits 5,
-    // everything beyond that goes onto viable list
-    //TODO- figure this out
-    //find a valid end point
+    return endPoint;
   }
 
   private void findCaves(ArrayList<Integer> caves) {
@@ -251,7 +332,8 @@ public class DungeonImpl implements Dungeon {
     //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        if (Gameboard[r][c].getNeighbors().size() != 2) {
+        if (Gameboard[r][c].getNeighbors().size() != 2
+                && !caves.contains(Gameboard[r][c].getIndex())) {
           caves.add(Gameboard[r][c].getIndex());
         }
       }
@@ -260,23 +342,30 @@ public class DungeonImpl implements Dungeon {
     //calculate how many caves require treasure
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
+      if (treasCaveNum == 0) {
+        treasCaveNum++;
+      }
       System.out.print("\nNumber of caves that need treasure: " + treasCaveNum);
-      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0, 1);
+      RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
+              0, 1);
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 0, 1);
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = rand2.getRandomNumber();
         if (treasureRand == 0 ) {
           for(int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
+                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
           }
         } else if (treasureRand == 1 ) {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
+                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
           }
         } else {
           for (int r = 0; r <= treasureRand + 1; r++) {
-            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl.TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
+            findCaveByIndex(caves.get(rand.getRandomNumber())).addTreasure(TreasureImpl
+                    .TreasureFactory.getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
           }
         }
 
@@ -389,7 +478,7 @@ public class DungeonImpl implements Dungeon {
           }
           for (int j = 0; j < interconnect; j++) {
             if (leftOverEdge.size() <= 0) {
-                throw new IllegalStateException("Left over edge list is already empty");
+              throw new IllegalStateException("Left over edge list is already empty");
             } else {
               int randomInt = randGen.nextInt(leftOverEdge.size());
               finalEdgeList.add(leftOverEdge.get(randomInt));
@@ -406,5 +495,10 @@ public class DungeonImpl implements Dungeon {
       }
     }
     System.out.print("Kruskals complete");
+  }
+
+  @Override
+  public int getPlayerStartPoint() {
+    return this.startPoint;
   }
 }

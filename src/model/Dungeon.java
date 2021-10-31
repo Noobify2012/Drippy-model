@@ -5,4 +5,7 @@ package model;
  */
 public interface Dungeon {
 
+  int getPlayerStartPoint();
+
+
 }

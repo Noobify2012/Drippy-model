@@ -4,22 +4,35 @@ class Edge {
   private Cave cave1;
   private Cave cave2;
 
-  private Direction directionFromCave1;
-  private Direction directionFromCave2;
+  private Direction directionToCave1;
+  private Direction directionToCave2;
 
   Edge(Cave cave1, Cave cave2) {
     this.cave1 = cave1;
     this.cave2 = cave2;
-    //TODO - Possibly Remove
-    this.directionFromCave1 = directionFromCave1;
-    this.directionFromCave2 = directionFromCave2;
+    this.directionToCave1 = directionToCave1;
+    this.directionToCave2 = directionToCave2;
+
+    if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() == -1) {
+      directionToCave2 = Direction.EAST;
+      directionToCave1 = Direction.WEST;
+    } else if (cave1.getRow() - cave2.getRow() == 0 && cave1.getColumn() - cave2.getColumn() == 1) {
+      directionToCave2 = Direction.WEST;
+      directionToCave1 = Direction.EAST;
+    } else if (cave1.getRow() - cave2.getRow() == -1 && cave1.getColumn() - cave2.getColumn() == 0) {
+      directionToCave2 = Direction.SOUTH;
+      directionToCave1 = Direction.NORTH;
+    } else {
+      directionToCave2 = Direction.NORTH;
+      directionToCave1 = Direction.SOUTH;
+    }
   }
 
-  Direction getDirection(Cave cave) {
+  public Direction getDirection(Cave cave) {
     if (cave == cave1) {
-      return directionFromCave1;
+      return directionToCave1;
     } else if (cave == cave2) {
-      return directionFromCave2;
+      return directionToCave2;
     } else {
       throw new IllegalArgumentException(cave + "is not associated with this edge");
     }
@@ -52,6 +65,14 @@ class Edge {
   void addNeighbors() {
     this.cave1.addNeighbor(this.getRightIndex());
     this.cave2.addNeighbor(this.getLeftIndex());
+  }
+
+  Direction getDirectionToCave1() {
+    return this.directionToCave1;
+  }
+
+  Direction getDirectionToCave2() {
+    return this.directionToCave2;
   }
 
 
