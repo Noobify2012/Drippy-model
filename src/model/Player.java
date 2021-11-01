@@ -20,7 +20,7 @@ public interface Player {
   /**
    * The player moves east.
    */
-  void moveEast(int index, ArrayList<Direction> directions,
+  void move(int index, ArrayList<Direction> directions,
                 ArrayList<Treasure> curTreasure);
 
   /**

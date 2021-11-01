@@ -21,7 +21,7 @@ public class PlayerImpl implements Player {
    */
   public PlayerImpl() {
     this.playerLocation = playerLocation;
-    this.treasureList = treasureList;
+    this.treasureList = new ArrayList<>();
     ArrayList<Treasure> treasureList = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
     this.currentTreasure = new ArrayList<>();
@@ -38,13 +38,23 @@ public class PlayerImpl implements Player {
                                     ArrayList<Treasure> curTreasure) {
     this.playerLocation = index;
     this.directions = directions;
-    if (curTreasure.size() >= 1) {
+    updateTreasure();
+    if (!curTreasure.isEmpty()) {
       for (int i = 0; i < curTreasure.size(); i++) {
         this.currentTreasure.add(curTreasure.get(i));
       }
     }
     //update the location after a move
     //this.playerLocation =
+  }
+
+  private void updateTreasure() {
+    //treasure list is empty and the player picked up treasure in the last cave
+    if (this.currentTreasure != null) {
+        for (int i = 0; i < this.currentTreasure.size(); i++) {
+          this.treasureList.add(this.currentTreasure.get(i));
+      }
+    }
   }
 
   /**
@@ -69,7 +79,7 @@ public class PlayerImpl implements Player {
    * The player moves east.
    */
   @Override
-  public void moveEast(int index, ArrayList<Direction> directions,
+  public void move(int index, ArrayList<Direction> directions,
                        ArrayList<Treasure> curTreasure) {
     //verify player can move east
     //reduce column by 1
@@ -107,10 +117,20 @@ public class PlayerImpl implements Player {
     String treasureString = "";
     String directionString = "";
     String curTreasureString = "";
-    if (this.treasureList == null) {
+    if (this.treasureList == null || this.treasureList.size() == 0) {
       treasureString = "nothing";
     } else {
-      treasureString = this.treasureList.toString();
+      for (int i = 0; i < this.treasureList.size(); i++) {
+        treasureString = treasureString + " " + this.treasureList.get(i).getName() + ",";
+//        if(this.treasureList.get(i).getName().equals("Ruby")) {
+//          treasureString.concat(" Ruby, ");
+//        } else if (this.treasureList.get(i).getName().equals("Sapphire")) {
+//          treasureString = treasureString + " " + this.treasureList.get(i).getName() + ", ";
+//        } else {
+//          treasureString.concat(" Diamond, ");
+//        }
+      }
+      //treasureString = this.treasureList.toString();
     }
 
     if (directions.size() == 1) {
@@ -121,22 +141,21 @@ public class PlayerImpl implements Player {
       }
     }
 
-    if (this.currentTreasure == null) {
+    if (this.currentTreasure == null || this.currentTreasure.size() == 0) {
       curTreasureString = "no treasure in this cave";
     } else if (currentTreasure.size() == 1) {
-      curTreasureString = "This" + currentTreasure.get(0).toString();
+      curTreasureString = "a " + currentTreasure.get(0).getName();
     } else {
       for (int i = 0; i < currentTreasure.size(); i++) {
-        curTreasureString = curTreasureString.concat(currentTreasure.get(i) + " ");
+        curTreasureString = curTreasureString + " " + this.currentTreasure.get(i).getName() + ",";
       }
     }
 
     String moveString = "";
     String playerString = "The player is currently in Cave " + playerLocation + " and has "
             + treasureString + " in their treasure bag. \nThey can go " + directionString
-            + "and there is " + treasureString + " in this cave.";
+            + "and there is " + curTreasureString + " in this cave.";
     Driver.printHelper(playerString);
-//    return playerString;
   }
 
 

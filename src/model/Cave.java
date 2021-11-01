@@ -10,7 +10,7 @@ public class Cave extends AbstractLocation {
   private int index;
   private int set;
   private ArrayList<Integer> neighborList;
-  private ArrayList<Treasure> treasureList;
+  private ArrayList<Treasure> caveTreasureList;
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
                  ArrayList treasureList, int index, int set) {
@@ -18,7 +18,7 @@ public class Cave extends AbstractLocation {
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;
-    this.treasureList = treasureList;
+    this.caveTreasureList = treasureList;
     if (entrances.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
     }
@@ -85,7 +85,7 @@ public class Cave extends AbstractLocation {
    * @param treasure takes in treasure and adds it to the player's treasure list.
    */
   void addTreasure(Treasure treasure) {
-    this.treasureList.add(treasure);
+    this.caveTreasureList.add(treasure);
   }
 
   /**Gets the players treasure list.
@@ -93,17 +93,16 @@ public class Cave extends AbstractLocation {
    * @return an array list of all the treasure that has been added to the player.
    */
   ArrayList<Treasure> getTreasureList() {
-    return this.treasureList;
+    return this.caveTreasureList;
   }
 
   ArrayList<Treasure> getTreasureFromCave() {
     ArrayList<Treasure> treasureForPlayer = new ArrayList<>();
-    if (!this.treasureList.isEmpty()) {
-      for (int i = 0; i < treasureList.size(); i ++) {
-        treasureForPlayer.add(i, this.treasureList.get(i));
+    if (!this.caveTreasureList.isEmpty()) {
+      for (int i = 0; i < caveTreasureList.size(); i ++) {
+        treasureForPlayer.add(i, this.caveTreasureList.get(i));
       }
     }
-    this.treasureList = null;
     return treasureForPlayer;
   }
 }

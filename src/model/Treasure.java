@@ -7,4 +7,6 @@ public interface Treasure {
 
   Treasure getTreasure();
 
+  String getName();
+
 }

@@ -220,7 +220,7 @@ public class DungeonImpl implements Dungeon {
     for (int i = 0; i < this.shortestPath.size(); i++) {
       //check for treasure, if it exists add it to the treasure bag, remove it from cave
       ArrayList<Treasure> caveTreasure = new ArrayList<>();
-      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null) {
+      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
         caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureFromCave();
       }
 
@@ -229,7 +229,8 @@ public class DungeonImpl implements Dungeon {
                 + "Lets check on our player.";
         Driver.printHelper(endString);
       }
-        player.moveEast(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
+
+        player.move(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
 
         //check if next cave is end point
         //if so, prepare for break out after move
@@ -399,7 +400,8 @@ public class DungeonImpl implements Dungeon {
       RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
               0, 1);
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 0, 1);
-      TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
+      //TODO figure out why this isn't working
+      TreasureImpl treasureFactory = new TreasureImpl();
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = rand2.getRandomNumber();
         if (treasureRand == 0) {
@@ -515,6 +517,8 @@ public class DungeonImpl implements Dungeon {
         if (setList.size() == 1 && interconnect == 0) {
           exitCond = true;
           //System.out.print("\nmade it to single set");
+          String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
+          Driver.printHelper(finalEdgeListString);
           //System.out.print("status of final edge list: " + finalEdgeList.toString());
         } else if (setList.size() == 1 && interconnect > 0) {
           //dump edges into single list
@@ -621,6 +625,8 @@ public class DungeonImpl implements Dungeon {
         ////System.out.print(path.get(i) + " ");
         pathList.add(path.get(i));
       }
+      String pathString = "Final path: " + pathList;
+      Driver.printHelper(pathString);
       //System.out.println("Final path: " + pathList);
       return pathList;
     }

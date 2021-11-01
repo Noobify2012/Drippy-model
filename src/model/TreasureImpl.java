@@ -7,11 +7,22 @@ package model;
  * method.
  */
 public class TreasureImpl {
-  enum TreasureType {
-    RUBY, DIAMOND, SAPPHIRE
+  public enum TreasureType {
+    RUBY("Ruby"), DIAMOND("Diamond"), SAPPHIRE("Sapphire");
+
+    private final String name;
+
+    TreasureType(String name) {
+      this.name = name;
+    }
   }
 
   static class Ruby implements Treasure {
+
+    @Override
+    public String getName() {
+      return "Ruby";
+    }
     @Override
     public Treasure getTreasure() {
       return new Ruby();
@@ -19,6 +30,12 @@ public class TreasureImpl {
   }
 
   static class Diamond implements Treasure {
+
+    @Override
+    public String getName() {
+      return "Diamond";
+    }
+
     @Override
     public Treasure getTreasure() {
       return new Diamond();
@@ -26,6 +43,12 @@ public class TreasureImpl {
   }
 
   static class Sapphire implements Treasure {
+
+    @Override
+    public String getName() {
+      return "Sapphire";
+    }
+
     @Override
     public Treasure getTreasure() {
       return new Sapphire();
