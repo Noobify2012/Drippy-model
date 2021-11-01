@@ -61,24 +61,33 @@ public class Driver {
       if (Integer.parseInt(inputChunks[1]) > 0) {
         rowBool = true;
         rows = Integer.parseInt(inputChunks[1]);
+        String rowPrint = "Value of Rows: " + rows;
+        Driver.printHelper(rowPrint);
       }
 
       boolean colBool = false;
       if (Integer.parseInt(inputChunks[2]) > 0) {
         colBool = true;
-        rows = Integer.parseInt(inputChunks[2]);
+        columns = Integer.parseInt(inputChunks[2]);
+        String colPrint = "Value of Rows: " + columns;
+        Driver.printHelper(colPrint);
       }
 
       boolean intBool = false;
       if (Integer.parseInt(inputChunks[3]) >= 0) {
         intBool = true;
         interconnect = Integer.parseInt(inputChunks[3]);
+        String intPrint = "Value of Rows: " + interconnect;
+        Driver.printHelper(intPrint);
+
       }
 
       boolean treasBool = false;
       if (Integer.parseInt(inputChunks[4]) >= 0 && Integer.parseInt(inputChunks[4]) <= 100) {
         treasBool = true;
-        interconnect = Integer.parseInt(inputChunks[4]);
+        treasPer = Integer.parseInt(inputChunks[4]);
+        String trePrint = "Value of Rows: " + treasPer;
+        Driver.printHelper(trePrint);
       }
 
       if (wrapsBool == true && rowBool == true && colBool == true && intBool == true
@@ -92,7 +101,7 @@ public class Driver {
 
 
     Player player = new PlayerImpl();
-    DungeonImpl test = new DungeonImpl(wraps, 5, 10, 0, 20, player);
+    DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player);
     //System.out.print("\n" + player.getPlayerStatus());
     //int testInt = test.getPlayerStartPoint();
 

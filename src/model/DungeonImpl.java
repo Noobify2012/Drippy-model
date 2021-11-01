@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -25,6 +27,7 @@ public class DungeonImpl implements Dungeon {
   private int endPoint;
   private Player player;
   private ArrayList<Integer> shortestPath;
+  private Graph graph;
 
   /**This creates a dungeon that requires the specification of whether the dungeon should wrap or
    * not. How many rows and columns there should be specified as integers. The degree of
@@ -54,7 +57,7 @@ public class DungeonImpl implements Dungeon {
     ArrayList<Edge> finalEdgeList = new ArrayList<>();
     ArrayList<Integer> shortestPath = new ArrayList<>();
 
-    this.wraps = false;
+    this.wraps = wraps;
     this.rows = rows;
     this.columns = columns;
     this.interconnect = interconnect;
@@ -67,6 +70,7 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = 0;
     this.player = player;
     this.shortestPath = shortestPath;
+    this.graph = graph;
 
 
 
@@ -86,12 +90,6 @@ public class DungeonImpl implements Dungeon {
 
     if (interconnect < 0) {
       throw new IllegalArgumentException("The interconnectivity cannot be less than 0");
-    }
-
-    if (wraps) {
-      //add wrapping edges to kruskals
-    } else {
-      //no wrapping edges
     }
 
     if (interconnect > 0 && !wraps) {
@@ -119,8 +117,6 @@ public class DungeonImpl implements Dungeon {
         ArrayList treasureList = new ArrayList();
         Cave cave = new Cave(r, c, entrances, neighborList, treasureList, index, index);
         gameboard[r][c] = cave;
-        //System.out.print("\nCurrent row = " + r + " Current Column = " + c + " Current cave "
-                //+ cave.getIndex());
         index++;
       }
     }
@@ -191,8 +187,6 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-    ////System.out.print("\nstatus of edgeList: " + edgeList.toString());
-    //System.out.print("\nstatus of potential edge list: " + potEdgeList.toString());
 
     getDungeon();
   }
@@ -213,84 +207,36 @@ public class DungeonImpl implements Dungeon {
 
     runBFS();
 
-    runDungeonBFS();
+//    runDungeonBFS();
+
+    //runDFS();
+
+    //setUpPlayerDFS();
+
+    runDungeon();
 
   }
 
-//  private void runBFSDisconnect() {
-//    Graph g = new Graph(finalEdgeList.size());
-//    for (int i = 0; i < v; i++) {
-//      g.addEdge(finalEdgeList.get(i).getLeftIndex(), finalEdgeList.get(i).getRightIndex());
-//    }
-//
-//    g.BFS();
-//
-//  }
-//
-//// code derived from: https://algorithms.tutorialhorizon.com/breadth-first-search-in-disconnected-graph/
-//
-//  void setupBFSDisconnected() {
-//    class Graph{
-//      int vertices;
-//      LinkedList<Integer>[] adjList;
-//
-//      public Graph(int vertices){
-//        this.vertices = vertices;
-//        adjList = new LinkedList[vertices];
-//
-//        //initialize the lists
-//        for (int i = 0; i <vertices ; i++) {
-//          adjList[i] = new LinkedList<>();
-//        }
-//      }
-//
-//
-//
-//      private void addEdge(int source, int destination) {
-//        //add forward edge
-//        adjList[source].addFirst(destination);
-//
-//        //add back edge for undirected graph
-//        adjList[destination].addFirst(source);
-//
-//      }
-//
-//      private void BFS(){
-//
-//        boolean [] visited = new boolean[vertices];
-//        Queue<Integer> queue = new LinkedList<>();
-//        System.out.println("BFS: ");
-//        for (int i = 0; i <vertices ; i++) {
-//          if(!visited[i]){
-//            queue.add(i);
-//
-//            while(!queue.isEmpty()){
-//
-//              //get a vertex from queue
-//              int vertex = queue.remove();
-//              //mark the vertex visited
-//              visited[vertex] = true;
-//
-//              //print the vertex
-//              System.out.print(vertex + " ");
-//
-//              //add unvisited adjacent vertices
-//              for (int j = 0; j <adjList[vertex].size() ; j++) {
-//                int adjVertex = adjList[vertex].get(j);
-//                if(!visited[adjVertex]) {
-//                  visited[adjVertex] = true;
-//                  queue.add(adjVertex);
-//                }
-//              }
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//  }
+  // Driver Code
+  void runDFS()
+  {
+    int nodes = rows * columns;
+    Graph g = new Graph(nodes);
 
-  private void runDungeonBFS() {
+    for (int t = 0; t < finalEdgeList.size(); t++) {
+      g.addEdge(finalEdgeList.get(t).getLeftIndex(), finalEdgeList.get(t).getRightIndex());
+    }
+
+
+    //System.out.println("Following is Depth First Traversal");
+
+    this.shortestPath = g.DFS();
+    System.out.println("\nThis is the DFS Path: " + this.shortestPath);
+  }
+
+
+
+  private void runDungeon() {
     for (int i = 0; i < this.shortestPath.size(); i++) {
       //check for treasure, if it exists add it to the treasure bag, remove it from cave
       ArrayList<Treasure> caveTreasure = new ArrayList<>();
@@ -312,18 +258,41 @@ public class DungeonImpl implements Dungeon {
 //        //check for path of travel
 //        String tempString = "";
 //      }
-
-
         //change player location
         //move to new index announcing direction traveled(get from edge)
-
-
         //run get player status
         player.getPlayerStatus();
       }
-
-
     }
+
+  private void runDungeonDFS() {
+    for (int i = 0; i < this.shortestPath.size(); i++) {
+      //check for treasure, if it exists add it to the treasure bag, remove it from cave
+      ArrayList<Treasure> caveTreasure = new ArrayList<>();
+      if (findCaveByIndex(shortestPath.get(i)).getTreasureList() != null || findCaveByIndex(shortestPath.get(i)).getTreasureList().size() != 0) {
+        caveTreasure = findCaveByIndex(shortestPath.get(i)).getTreasureFromCave();
+      }
+
+      if (i == this.shortestPath.size() - 1) {
+        String endString = "\nThe has reached their end point! Their quest is over. "
+                + "Lets check on our player.";
+        Driver.printHelper(endString);
+      }
+
+      player.move(shortestPath.get(i), getPossibleDirection(shortestPath.get(i)), caveTreasure);
+
+      //check if next cave is end point
+      //if so, prepare for break out after move
+//      if (i != shortestPath.size() - 1) {
+//        //check for path of travel
+//        String tempString = "";
+//      }
+      //change player location
+      //move to new index announcing direction traveled(get from edge)
+      //run get player status
+      player.getPlayerStatus();
+    }
+  }
 
   private void setUpPlayer() {
     //place the player in the dungeon at the cave index
@@ -331,6 +300,17 @@ public class DungeonImpl implements Dungeon {
             getPossibleDirection(this.startPoint));
 
     String enterString = "\nThe Player enters the dungeon at Cave " + this.startPoint
+            + ". They currently have no treasure.";
+    Driver.printHelper(enterString);
+
+  }
+
+  private void setUpPlayerDFS() {
+    //place the player in the dungeon at the cave index
+    player.enterDungeon(this.shortestPath.get(0), findCaveByIndex(this.shortestPath.get(0)).getTreasureList(),
+            getPossibleDirection(this.shortestPath.get(0)));
+
+    String enterString = "\nThe Player enters the dungeon at Cave " + this.shortestPath.get(0)
             + ". They currently have no treasure.";
     Driver.printHelper(enterString);
 
@@ -416,7 +396,7 @@ public class DungeonImpl implements Dungeon {
           //System.out.print("\nList to Check indexes after add: " + listToCheck.toString());
         }
         for (int r = 0; r < temp - 1; r++) {
-          //TODO - gets index out of bounds, why?
+          //TODO - gets index out of bounds, why? size of list changes with remove
           //System.out.print("Trying to remove index: " + r + " from list to check: " + listToCheck);
           listToCheck.remove(r);
         }
