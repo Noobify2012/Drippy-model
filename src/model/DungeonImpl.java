@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import driver.Driver;
@@ -216,93 +217,76 @@ public class DungeonImpl implements Dungeon {
 
   }
 
-  //https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
-//  private void runDFC() {
-//
-//    for (int i = 0; i < finalEdgeList.size(); i++) {
-//      addEdge(adj, finalEdgeList.get(i).getLeftIndex(), finalEdgeList.get(i).getRightIndex());
+//  private void runBFSDisconnect() {
+//    Graph g = new Graph(finalEdgeList.size());
+//    for (int i = 0; i < v; i++) {
+//      g.addEdge(finalEdgeList.get(i).getLeftIndex(), finalEdgeList.get(i).getRightIndex());
 //    }
 //
-//// This class represents a
-//// directed graph using adjacency
-//// list representation
-//    class Graph {
-//      private int V; // No. of vertices
+//    g.BFS();
 //
-//      // Array of lists for
-//      // Adjacency List Representation
-//      private LinkedList<Integer> adj[];
+//  }
 //
-//      // Constructor
-//      @SuppressWarnings("unchecked") Graph(int v)
-//      {
-//        V = v;
-//        adj = new LinkedList[v];
-//        for (int i = 0; i < v; ++i)
-//          adj[i] = new LinkedList();
-//      }
+//// code derived from: https://algorithms.tutorialhorizon.com/breadth-first-search-in-disconnected-graph/
 //
-//      // Function to add an edge into the graph
-//      void addEdge(int v, int w)
-//      {
-//        adj[v].add(w); // Add w to v's list.
-//      }
+//  void setupBFSDisconnected() {
+//    class Graph{
+//      int vertices;
+//      LinkedList<Integer>[] adjList;
 //
-//      // A function used by DFS
-//      void DFSUtil(int v, boolean visited[])
-//      {
-//        // Mark the current node as visited and print it
-//        visited[v] = true;
-//        System.out.print(v + " ");
+//      public Graph(int vertices){
+//        this.vertices = vertices;
+//        adjList = new LinkedList[vertices];
 //
-//        // Recur for all the vertices adjacent to this
-//        // vertex
-//        Iterator<Integer> i = adj[v].listIterator();
-//        while (i.hasNext())
-//        {
-//          int n = i.next();
-//          if (!visited[n])
-//            DFSUtil(n, visited);
+//        //initialize the lists
+//        for (int i = 0; i <vertices ; i++) {
+//          adjList[i] = new LinkedList<>();
 //        }
 //      }
 //
-//      // The function to do DFS traversal.
-//      // It uses recursive
-//      // DFSUtil()
-//      void DFS(int v)
-//      {
-//        // Mark all the vertices as
-//        // not visited(set as
-//        // false by default in java)
-//        boolean visited[] = new boolean[V];
 //
-//        // Call the recursive helper
-//        // function to print DFS
-//        // traversal
-//        DFSUtil(v, visited);
+//
+//      private void addEdge(int source, int destination) {
+//        //add forward edge
+//        adjList[source].addFirst(destination);
+//
+//        //add back edge for undirected graph
+//        adjList[destination].addFirst(source);
+//
 //      }
 //
-//      // Driver Code
-//      public static void main(String args[])
-//      {
-//        Graph g = new Graph(4);
+//      private void BFS(){
 //
-//        g.addEdge(0, 1);
-//        g.addEdge(0, 2);
-//        g.addEdge(1, 2);
-//        g.addEdge(2, 0);
-//        g.addEdge(2, 3);
-//        g.addEdge(3, 3);
+//        boolean [] visited = new boolean[vertices];
+//        Queue<Integer> queue = new LinkedList<>();
+//        System.out.println("BFS: ");
+//        for (int i = 0; i <vertices ; i++) {
+//          if(!visited[i]){
+//            queue.add(i);
 //
-//        System.out.println(
-//                "Following is Depth First Traversal "
-//                        + "(starting from vertex 2)");
+//            while(!queue.isEmpty()){
 //
-//        g.DFS(2);
+//              //get a vertex from queue
+//              int vertex = queue.remove();
+//              //mark the vertex visited
+//              visited[vertex] = true;
+//
+//              //print the vertex
+//              System.out.print(vertex + " ");
+//
+//              //add unvisited adjacent vertices
+//              for (int j = 0; j <adjList[vertex].size() ; j++) {
+//                int adjVertex = adjList[vertex].get(j);
+//                if(!visited[adjVertex]) {
+//                  visited[adjVertex] = true;
+//                  queue.add(adjVertex);
+//                }
+//              }
+//            }
+//          }
+//        }
 //      }
 //    }
-//// This code is contributed by Aakash Hasija
-//
 //
 //  }
 
