@@ -1,0 +1,51 @@
+Matthew Greene
+File: Run2.txt
+
+Summary: This is a run of my dungeon model which demonstrates a player moving through a 10 row by 10 column 
+non- wrapping dungeon with level 0 interconnectivity and 10% of the caves have treasure. The player goes 
+along the shortest path from their start point to their end point. 
+
+Edits to this output: The only edits that I made to this output was to reduce the lengeth of the line of the 
+final edges and just dropped them down to the next line. 
+
+--------------------------------------------------------------------------------------------------------------------------
+Welcome to the dungeon please enter true or false if you would like the dungeon to wrap, 
+the number of rows you would like as an integer, the number of columns as an integer, 
+the level of interconnectedness you would like as an integer, 
+and the percentage of caves that you would like to have treasure.
+below is an example 
+true 10 10 0 10
+false 10 10 0 10
+status of final edge list: [14<========>24, 12<========>22, 15<========>25, 27<========>37, 42<========>43,
+ 39<========>49, 24<========>34, 35<========>45, 2<========>12, 13<========>14, 46<========>47, 45<========>46,
+ 24<========>25, 25<========>35, 4<========>14, 10<========>11, 18<========>19, 47<========>48, 16<========>26,
+ 25<========>26, 12<========>13, 41<========>42, 38<========>39, 26<========>36, 21<========>31, 32<========>33,
+ 33<========>34, 23<========>24, 30<========>40, 6<========>16, 18<========>28, 28<========>29, 1<========>2,
+ 5<========>15, 20<========>21, 44<========>45, 6<========>7, 30<========>31, 2<========>3, 21<========>22,
+ 0<========>1, 29<========>39, 0<========>10, 40<========>41, 7<========>8, 38<========>48, 37<========>38,
+ 17<========>18, 8<========>9]
+
+The Player enters the dungeon at Cave 23. They currently have no treasure.
+Final path: [23, 24, 14, 13, 12, 2, 1, 0, 10, 11]
+The player is currently in Cave 23 and has nothing in their treasure bag. 
+They can go [EAST] and there is no treasure in this cave in this cave.
+The player is currently in Cave 24 and has nothing in their treasure bag. 
+They can go NORTH SOUTH EAST WEST and there is no treasure in this cave in this cave.
+The player is currently in Cave 14 and has nothing in their treasure bag. 
+They can go SOUTH WEST NORTH and there is a Diamond in this cave.
+The player is currently in Cave 13 and has  Diamond, in their treasure bag. 
+They can go EAST WEST and there is a Diamond in this cave.
+The player is currently in Cave 12 and has  Diamond, Diamond, in their treasure bag. 
+They can go SOUTH NORTH EAST and there is  Diamond, Diamond, in this cave.
+The player is currently in Cave 2 and has  Diamond, Diamond, Diamond, Diamond, in their treasure bag. 
+They can go SOUTH WEST EAST and there is  Diamond, Diamond, in this cave.
+The player is currently in Cave 1 and has  Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, in their treasure bag. 
+They can go EAST WEST and there is  Diamond, Diamond, in this cave.
+The player is currently in Cave 0 and has  Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, in their treasure bag. 
+They can go EAST SOUTH and there is  Diamond, Diamond, in this cave.
+The player is currently in Cave 10 and has  Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, in their treasure bag. 
+They can go EAST NORTH and there is  Diamond, Diamond, in this cave.
+
+The has reached their end point! Their quest is over. Lets check on our player.
+The player is currently in Cave 11 and has  Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, Diamond, in their treasure bag. 
+They can go [WEST] and there is  Diamond, Diamond, Diamond, Diamond, in this cave.
