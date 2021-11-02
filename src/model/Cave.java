@@ -12,14 +12,14 @@ public class Cave extends AbstractLocation {
   private ArrayList<Integer> neighborList;
   private ArrayList<Treasure> caveTreasureList;
 
-  protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
-                 ArrayList treasureList, int index, int set) {
-    super(new Point2D(row, column), entrances, neighborList, treasureList);
+  protected Cave(int row, int column, ArrayList<Integer> neighborList,
+                 ArrayList<Treasure> treasureList, int index, int set) {
+    super(new Point2D(row, column), neighborList, treasureList);
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;
     this.caveTreasureList = treasureList;
-    if (entrances.size() == 2 && !treasureList.isEmpty()) {
+    if (neighborList.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
     }
   }
@@ -76,7 +76,7 @@ public class Cave extends AbstractLocation {
    *
    * @return an ArrayList of the neighbors of the current cave.
    */
-  ArrayList getNeighbors() {
+  ArrayList<Integer> getNeighbors() {
     return this.neighborList;
   }
 
@@ -99,7 +99,7 @@ public class Cave extends AbstractLocation {
   ArrayList<Treasure> getTreasureFromCave() {
     ArrayList<Treasure> treasureForPlayer = new ArrayList<>();
     if (!this.caveTreasureList.isEmpty()) {
-      for (int i = 0; i < caveTreasureList.size(); i ++) {
+      for (int i = 0; i < caveTreasureList.size(); i++) {
         treasureForPlayer.add(i, this.caveTreasureList.get(i));
       }
     }

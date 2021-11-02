@@ -7,6 +7,9 @@ package model;
  * method.
  */
 public class TreasureImpl {
+  /**
+   * The treasure enum which contains rubies, diamonds, and sapphires.
+   */
   public enum TreasureType {
     RUBY("Ruby"), DIAMOND("Diamond"), SAPPHIRE("Sapphire");
 
@@ -23,6 +26,11 @@ public class TreasureImpl {
     public String getName() {
       return "Ruby";
     }
+
+    /** This is used in the factory patter to return a Ruby.
+     *
+     * @return a new ruby object.
+     */
     @Override
     public Treasure getTreasure() {
       return new Ruby();
@@ -36,6 +44,10 @@ public class TreasureImpl {
       return "Diamond";
     }
 
+    /** This is used in the factory patter to return a Diamond.
+     *
+     * @return a new diamond object.
+     */
     @Override
     public Treasure getTreasure() {
       return new Diamond();
@@ -49,6 +61,10 @@ public class TreasureImpl {
       return "Sapphire";
     }
 
+    /** This is used in the factory patter to return a Sapphire.
+     *
+     * @return a new sapphire object.
+     */
     @Override
     public Treasure getTreasure() {
       return new Sapphire();
@@ -56,6 +72,13 @@ public class TreasureImpl {
   }
 
   static class TreasureFactory {
+    /**This is the treasure factory, when the get treasure method is called it actually makes the
+     *  treasure from the treasure enum.
+     *
+     * @param treasureType the type of treasure that needs to be made. either a ruby, diamond,
+     *                     or sapphire.
+     * @return a piece of treasure.
+     */
     public static Treasure getTreasureFromEnum(TreasureType treasureType) {
 
       Treasure treasure = null;

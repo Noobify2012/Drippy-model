@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * This is the direction enum which enforces the possible directions a player can travel.
+ */
 enum Direction {
   NORTH(-1, 0),
   SOUTH(1, 0),

@@ -1,16 +1,19 @@
 package driver;
 
 import java.util.Scanner;
-
-import javax.swing.*;
-
-import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
 import model.PlayerImpl;
 
+/**
+ * Driver that acts as the controller for the Dungeon project. This just needs to be run.
+ */
 public class Driver {
 
+  /**This is the main for the dungeon model.
+   *
+   * @param args this takes in string arguments.
+   */
   public static void main(String[] args) {
     boolean startCond = false;
     boolean wraps = false;
@@ -21,10 +24,10 @@ public class Driver {
     while (!startCond) {
 
       String welcomeString = "Welcome to the dungeon please enter true or false if you would like "
-              + "the dungeon to wrap, \nthe number of rows you would like as an integer, the number of"
-              +" columns as an integer, \nthe level of interconnectedness you would like as an integer,"
-              + " \nand the percentage of caves that you would like to have treasure." +
-              "\nbelow is an example \ntrue 10 10 0 10";
+              + "the dungeon to wrap, \nthe number of rows you would like as an integer, the "
+              + "number of columns as an integer, \nthe level of interconnectedness you would like"
+              + " as an integer, \nand the percentage of caves that you would like to have"
+              + " treasure. \nbelow is an example \ntrue 10 10 0 10";
 
       Driver.printHelper(welcomeString);
 
@@ -35,15 +38,6 @@ public class Driver {
       String inputChunks[] = new String[5];
       inputChunks = input.split(" ");
 
-//      for (String s : inputChunks) {
-//        Driver.printHelper(s);
-//      }
-
-//      for (int s = 0; s < 5; s++) {
-//        Driver.printHelper("input chunks position " + s + " is " + inputChunks[s]);
-//      }
-
-
       boolean wrapsBool = false;
       if (inputChunks[0].equalsIgnoreCase("false")
               || inputChunks[0].equalsIgnoreCase("true")) {
@@ -52,8 +46,6 @@ public class Driver {
         } else {
           wraps = true;
         }
-        //Driver.printHelper(inputChunks[0]);
-        //Driver.printHelper("Status of intputChunks" + inputChunks);
         wrapsBool = true;
       }
 
@@ -62,7 +54,6 @@ public class Driver {
         rowBool = true;
         rows = Integer.parseInt(inputChunks[1]);
         String rowPrint = "Value of Rows: " + rows;
-        Driver.printHelper(rowPrint);
       }
 
       boolean colBool = false;
@@ -70,7 +61,6 @@ public class Driver {
         colBool = true;
         columns = Integer.parseInt(inputChunks[2]);
         String colPrint = "Value of Rows: " + columns;
-        Driver.printHelper(colPrint);
       }
 
       boolean intBool = false;
@@ -78,8 +68,6 @@ public class Driver {
         intBool = true;
         interconnect = Integer.parseInt(inputChunks[3]);
         String intPrint = "Value of Rows: " + interconnect;
-        Driver.printHelper(intPrint);
-
       }
 
       boolean treasBool = false;
@@ -87,26 +75,22 @@ public class Driver {
         treasBool = true;
         treasPer = Integer.parseInt(inputChunks[4]);
         String trePrint = "Value of Rows: " + treasPer;
-        Driver.printHelper(trePrint);
       }
 
-      if (wrapsBool == true && rowBool == true && colBool == true && intBool == true
-              && treasBool == true) {
+      if (wrapsBool && rowBool && colBool && intBool && treasBool) {
         startCond = true;
       }
 
     }
 
-
-
-
     Player player = new PlayerImpl();
     DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player);
-    //System.out.print("\n" + player.getPlayerStatus());
-    //int testInt = test.getPlayerStartPoint();
-
   }
 
+  /**This is a helper which takes in a string and prints it.
+   *
+   * @param printString The string being passed that is supposed to be printed.
+   */
   public static void printHelper(String printString) {
     System.out.println(printString);
   }

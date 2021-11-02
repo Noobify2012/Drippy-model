@@ -8,31 +8,15 @@ import java.util.ArrayList;
 public interface Player {
 
   /**
-   * The player moves north.
-   */
-  void moveNorth();
-
-  /**
-   * The player moves south.
-   */
-  void moveSouth();
-
-  /**
-   * The player moves east.
+   * The player moves.
    */
   void move(int index, ArrayList<Direction> directions,
                 ArrayList<Treasure> curTreasure);
-
-  /**
-   * The player moves west.
-   */
-  void moveWest();
 
   /**This builds and returns the player's status which includes, the index of the cave they are
    * currently in, the treasure the player has collected so far, the moves the player can make based
    * on their current location, and the treasure in the cave they are currently in.
    *
-   * @return the string containing all the pertinent player and cave information.
    */
   void getPlayerStatus();
 

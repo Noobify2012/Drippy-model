@@ -1,10 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-
 import driver.Driver;
-import model.DungeonImpl;
-
+import java.util.ArrayList;
 
 /**
  * The implementation of the player. This player when created has a location and treasure list that
@@ -51,50 +48,23 @@ public class PlayerImpl implements Player {
   private void updateTreasure() {
     //treasure list is empty and the player picked up treasure in the last cave
     if (this.currentTreasure != null) {
-        for (int i = 0; i < this.currentTreasure.size(); i++) {
-          this.treasureList.add(this.currentTreasure.get(i));
+      for (int i = 0; i < this.currentTreasure.size(); i++) {
+        this.treasureList.add(this.currentTreasure.get(i));
       }
     }
   }
 
-  /**
-   * The player moves north.
-   */
-  @Override
-  public void moveNorth() {
-    //verify player can move north
-    //reduce row by 1
-  }
-
-  /**
-   * The player moves south.
-   */
-  @Override
-  public void moveSouth() {
-    //verify player can move south
-    //increase row by 1
-  }
 
   /**
    * The player moves east.
    */
   @Override
   public void move(int index, ArrayList<Direction> directions,
-                       ArrayList<Treasure> curTreasure) {
+                   ArrayList<Treasure> curTreasure) {
     //verify player can move east
     //reduce column by 1
 
     updatePlayerLocation(index, directions, curTreasure);
-
-  }
-
-  /**
-   * The player moves west.
-   */
-  @Override
-  public void moveWest() {
-    //verify player can move west
-    //increase column by 1
 
   }
 
@@ -110,7 +80,6 @@ public class PlayerImpl implements Player {
    * currently in, the treasure the player has collected so far, the moves the player can make based
    * on their current location, and the treasure in the cave they are currently in.
    *
-   * @return the string containing all the pertinent player and cave information.
    */
   @Override
   public void getPlayerStatus() {
@@ -122,15 +91,7 @@ public class PlayerImpl implements Player {
     } else {
       for (int i = 0; i < this.treasureList.size(); i++) {
         treasureString = treasureString + " " + this.treasureList.get(i).getName() + ",";
-//        if(this.treasureList.get(i).getName().equals("Ruby")) {
-//          treasureString.concat(" Ruby, ");
-//        } else if (this.treasureList.get(i).getName().equals("Sapphire")) {
-//          treasureString = treasureString + " " + this.treasureList.get(i).getName() + ", ";
-//        } else {
-//          treasureString.concat(" Diamond, ");
-//        }
       }
-      //treasureString = this.treasureList.toString();
     }
 
     if (directions.size() == 1) {
