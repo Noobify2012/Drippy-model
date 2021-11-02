@@ -182,16 +182,16 @@ public class DungeonImpl implements Dungeon {
     this.startPoint = getStartPoint(getCavesByIndex());
     //finds a viable end point
     this.endPoint = findEndPoint(this.startPoint);
-    //finds caves and adds Treasure
+    //find caves and adds Treasure
     findCaves(getCavesByIndex());
 
-    setUpPlayer();
+//    setUpPlayer();
+//
+//    runBfs();
 
-    runBfs();
+    runDfs();
 
-    //runDFS();
-
-    //setUpPlayerDfs();
+    setUpPlayerDfs();
 
     runDungeon();
 
@@ -526,8 +526,8 @@ public class DungeonImpl implements Dungeon {
         //check for single set
         if (setList.size() == 1 && interconnect == 0) {
           exitCond = true;
-          String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
-          Driver.printHelper(finalEdgeListString);
+//          String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
+//          Driver.printHelper(finalEdgeListString);
         } else if (setList.size() == 1 && interconnect > 0) {
           //dump edges into single list
           for (int l = 0; l < this.potEdgeList.size(); l++) {
@@ -550,6 +550,8 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
+    String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
+    Driver.printHelper(finalEdgeListString);
   }
 
   /**

@@ -1,4 +1,6 @@
-About/Overview: This is my implementation of the Dungeon Model. 1 player enters the dungeon with nothing but their empty treasure sack.
+About/Overview: This is my implementation of the Dungeon Model. A player enters the dungeon with nothing but their empty treasure sack. 
+The player then navigates the dungeon from their start point to the end. They can either start at a randomly selected point and navigate to a 
+point at least 5 moves away or they can start at point 0 and move through all of the nodes in the dungeon. 
 
 
 List of features. List all features that are present in your program.
@@ -19,7 +21,7 @@ this isn't all done automatcially when a player is created because of the requir
 How To Run. Instructions to run the program should include the following:
 
 How to run the jar file
-There are no command lind arguements that are required to run the jar file. 
+There are no command lind arguements that are required to run the jar file other than java -jar Project3_Dungeon_Model.jar
 
 How to Use the Program. Instructions on how to use functionality in your program. if interactive, how to interact with your program? Pay particular attention to the parts that are not part of the example runs that you provided.
 - The only thing the user needs to do is start the jar file and when prompted either enter restart to restart the battle or quit to end the program. 

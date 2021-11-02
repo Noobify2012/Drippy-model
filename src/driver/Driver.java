@@ -23,11 +23,12 @@ public class Driver {
     int treasPer = 0;
     while (!startCond) {
 
-      String welcomeString = "Welcome to the dungeon please enter true or false if you would like "
-              + "the dungeon to wrap, \nthe number of rows you would like as an integer, the "
-              + "number of columns as an integer, \nthe level of interconnectedness you would like"
+      String welcomeString = "Welcome to the Dungeon. "
+              + "\nPlease enter true or false if you would like the dungeon to wrap."
+              + " \nthe number of rows you would like as an integer. \nThe "
+              + "number of columns as an integer.\nThe level of interconnectedness you would like"
               + " as an integer, \nand the percentage of caves that you would like to have"
-              + " treasure. \nbelow is an example \ntrue 10 10 0 10";
+              + " treasure between 0 and 100. \nHere is an example: true 10 10 0 10";
 
       Driver.printHelper(welcomeString);
 
