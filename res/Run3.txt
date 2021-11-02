@@ -1,15 +1,16 @@
 Matthew Greene
 File: Run3.txt
 
-Summary: This is a run of my dungeon model which demonstrates a player moving through a 10 row by 10 column 
-wrapping dungeon with level 5 interconnectivity and 20% of the caves have treasure. The player goes 
-along the shortest path from the first node in the graph to every other node in the graph.
+Summary: This is a run of my dungeon model which demonstrates a player moving through a 10 row by 10
+column wrapping dungeon with level 5 interconnectivity and 20% of the caves have treasure. The
+player goes along the shortest path from the first node in the graph to every other node in the
+graph.
 
-Edits to this output: The only edits that I made to this output was to reduce the lengeth of the line of the 
-final edges and just dropped them down to the next line. 
+Edits to this output: The only edits that I made to this output was to reduce the length of the
+line of the final edges and just dropped them down to the next line.
 
 --------------------------------------------------------------------------------------------------------------------------
-WWelcome to the Dungeon. 
+Welcome to the Dungeon.
 Please enter true or false if you would like the dungeon to wrap. 
 the number of rows you would like as an integer. 
 The number of columns as an integer.
@@ -34,7 +35,11 @@ status of final edge list: [95<========>5, 97<========>7, 24<========>34, 33<===
 83<========>84, 43<========>53, 13<========>23, 99<========>90, 60<========>61, 58<========>59, 14<========>15,
 80<========>81]
 
-This is the DFS Path: [0, 1, 2, 10, 20, 3, 4, 14, 15, 16, 26, 36, 27, 37, 38, 28, 25, 35, 5, 6, 7, 8, 18, 9, 19, 11, 21, 31, 12, 22, 32, 42, 52, 53, 63, 64, 74, 75, 85, 86, 96, 87, 95, 76, 13, 23, 17, 24, 34, 44, 45, 54, 55, 56, 57, 67, 68, 77, 29, 39, 49, 59, 50, 60, 70, 80, 90, 91, 81, 82, 92, 93, 61, 62, 72, 71, 30, 40, 33, 41, 51, 43, 46, 47, 48, 58, 65, 66, 69, 79, 89, 73, 83, 84, 78, 88, 98, 99, 94, 97]
+This is the DFS Path: [0, 1, 2, 10, 20, 3, 4, 14, 15, 16, 26, 36, 27, 37, 38, 28, 25, 35, 5, 6, 7,
+8, 18, 9, 19, 11, 21, 31, 12, 22, 32, 42, 52, 53, 63, 64, 74, 75, 85, 86, 96, 87, 95, 76, 13, 23,
+17, 24, 34, 44, 45, 54, 55, 56, 57, 67, 68, 77, 29, 39, 49, 59, 50, 60, 70, 80, 90, 91, 81, 82, 92,
+93, 61, 62, 72, 71, 30, 40, 33, 41, 51, 43, 46, 47, 48, 58, 65, 66, 69, 79, 89, 73, 83, 84, 78, 88,
+98, 99, 94, 97]
 
 The Player enters the dungeon at Cave 0. They currently have no treasure.
 The player is currently in Cave 0 and has nothing in their treasure bag. 

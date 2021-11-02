@@ -5,7 +5,7 @@ Summary: This is a run of my dungeon model which demonstrates a player moving th
 non-wrapping dungeon with level 2 interconnectivity and 20% of the caves have treasure. The player goes 
 along the shortest path from the first node in the graph to every other node in the graph.
 
-Edits to this output: The only edits that I made to this output was to reduce the lengeth of the line of the 
+Edits to this output: The only edits that I made to this output was to reduce the length of the line of the
 final edges and just dropped them down to the next line. 
 
 --------------------------------------------------------------------------------------------------------------------------

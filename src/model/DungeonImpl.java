@@ -185,13 +185,13 @@ public class DungeonImpl implements Dungeon {
     //find caves and adds Treasure
     findCaves(getCavesByIndex());
 
-//    setUpPlayer();
+    setUpPlayer();
+
+    runBfs();
+
+//    runDfs();
 //
-//    runBfs();
-
-    runDfs();
-
-    setUpPlayerDfs();
+//    setUpPlayerDfs();
 
     runDungeon();
 

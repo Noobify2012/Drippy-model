@@ -1,8 +1,21 @@
 About/Overview: This is my implementation of the Dungeon Model. A player enters the dungeon with
 nothing but their empty treasure sack. The player then navigates the dungeon from their start point
 to the end. They can either start at a randomly selected point and navigate to a point at least 5
-moves away or start at cave 0 and move through all the nodes in the dungeon.
+moves away or start at cave 0 and move through all the nodes in the dungeon. Dungeons are
+represented as interconnected nodes where position row 0, column 0 also known as index 0 is in the
+top left-hand corner and the index increases from left to right in the increasing x direction of the
+Cartesian plane(columns). It then drops to the next y position down and all the way to the left like
+a carriage return to do the same process for the second row. An example 3 row by 3 columns graph is
+below:
+        columns
+    0       1       2
+r
+o   3       4       5
+w
+s   6       7       8
 
+The program will print the final list of edges to the screen after it has generated which will have
+the indexes of both caves connected by a bidirectional arrow(18<========>23).
 
 List of features. List all features that are present in your program.
 - When the program starts the user is greeted and presented with the criteria for entering proper
@@ -64,16 +77,82 @@ caves with treasure.
 Description of Examples. 
 
 Run 1 -- Run 1.txt:
-1. Welcome Message printed to user
-2. Introduces and prints the players and their attributes as well as the weapons they issued.
-3. It then prints out the results of the battle and asks if the user wants to restart.
-4. In this run, I entered quit and ended the program, the program then prints a farewell message. 
+1. Welcome Message printed to user with example for how to enter a valid dungeon request.
+2. Generates the dungeon based on the parameters passed(wrapping, 10 row by 10 column dungeon, level
+0 interconnectivity, and 20% treasure).
+3. It then prints out the final edge list after Kruskal's has been completed. It then announces
+where the player is entering the dungeon(ie its randomly selected start point) and what the route
+they will follow through the dungeon is.
+4. The player then navigates the dungeon. At each step along the way the player's status is printed
+out which includes what cave they are in, identified by cave index, what they currently have in
+their treasure bag, what direction they can move from that cave(North, South, East, and/or West),
+and what treasure is in that cave that they will pick up.
+5. After the player has completed their route through the cave, the program prints a final message
+announcing the completion of navigating the dungeon and presents a final list of what the player
+collected for treasure along the way.
+
 
 Run 2 -- Run2.txt:
-1. Welcome Message printed to user
-2. Introduces and prints the players and their attributes as well as the weapons they issued.
-3. It then prints out the results of the battle and asks if the user wants to restart.
-4. In this run, I entered restart and restarted the program, the program then runs.
+1. Welcome Message printed to user with example for how to enter a valid dungeon request.
+2. Generates the dungeon based on the parameters passed(non- wrapping, 10 row by 10 column dungeon,
+ level 0 interconnectivity, and 20% treasure).
+3. It then prints out the final edge list after Kruskal's has been completed. It then announces
+where the player is entering the dungeon(ie its randomly selected start point) and what the route
+they will follow through the dungeon is.
+4. The player then navigates the dungeon. At each step along the way the player's status is printed
+out which includes what cave they are in, identified by cave index, what they currently have in
+their treasure bag, what direction they can move from that cave(North, South, East, and/or West),
+and what treasure is in that cave that they will pick up.
+5. After the player has completed their route through the cave, the program prints a final message
+announcing the completion of navigating the dungeon and presents a final list of what the player
+collected for treasure along the way.
+
+Run 3 -- Run3.txt:
+1. Welcome Message printed to user with example for how to enter a valid dungeon request.
+2. Generates the dungeon based on the parameters passed(wrapping, 10 row by 10 column dungeon,
+ level 5 interconnectivity, and 20% treasure).
+3. It then prints out the final edge list after Kruskal's has been completed. It then announces
+where the player is entering the dungeon(ie its randomly selected start point) and what the route
+they will follow through the dungeon is.
+4. This run has the player navigating the entire dungeon and visiting every cave and tunnel in the
+dungeon. At each step along the way the player's status is printed out which includes what cave they
+are in, identified by cave index, what they currently have in their treasure bag, what direction
+they can move from that cave(North, South, East, and/or West),and what treasure is in that cave that
+ they will pick up.
+5. After the player has completed their route through the cave, the program prints a final message
+announcing the completion of navigating the dungeon and presents a final list of what the player
+collected for treasure along the way.
+
+Run 4 -- Run4.txt:
+1. Welcome Message printed to user with example for how to enter a valid dungeon request.
+2. Generates the dungeon based on the parameters passed(non-wrapping, 5 row by 5 column dungeon,
+ level 2 interconnectivity, and 30% treasure).
+3. It then prints out the final edge list after Kruskal's has been completed. It then announces
+where the player is entering the dungeon(ie its randomly selected start point) and what the route
+they will follow through the dungeon is.
+4. This run has the player navigating the entire dungeon and visiting every cave and tunnel in the
+dungeon. At each step along the way the player's status is printed out which includes what cave they
+are in, identified by cave index, what they currently have in their treasure bag, what direction
+they can move from that cave(North, South, East, and/or West),and what treasure is in that cave that
+ they will pick up.
+5. After the player has completed their route through the cave, the program prints a final message
+announcing the completion of navigating the dungeon and presents a final list of what the player
+collected for treasure along the way.
+
+Run 5 -- Run 5.txt:
+1. Welcome Message printed to user with example for how to enter a valid dungeon request.
+2. Generates the dungeon based on the parameters passed(wrapping, 6 row by 8 column dungeon, level
+8 interconnectivity, and 100% treasure).
+3. It then prints out the final edge list after Kruskal's has been completed. It then announces
+where the player is entering the dungeon(ie its randomly selected start point) and what the route
+they will follow through the dungeon is.
+4. The player then navigates the dungeon. At each step along the way the player's status is printed
+out which includes what cave they are in, identified by cave index, what they currently have in
+their treasure bag, what direction they can move from that cave(North, South, East, and/or West),
+and what treasure is in that cave that they will pick up.
+5. After the player has completed their route through the cave, the program prints a final message
+announcing the completion of navigating the dungeon and presents a final list of what the player
+collected for treasure along the way.
 
 
 Design/Model Changes. It is important to document what changes that you have made from earlier designs. Why were those changes required? You can write these changes in terms of version if you wish.
@@ -123,5 +202,8 @@ without the testing being done in the same class or package.
 
 
 Citations. 
-I found an example of how to simulate the dice on stackoverflow and how to sort the values so that we can do the selection for the attribute implementation:  //https://stackoverflow.com/questions/20518078/how-to-sort-listinteger
-There are other citations in line including in differnt gear classes that used names of mythical or biblical items and where i found the references. 
+I found an example of how to do depth first and breadth first searches on geeks for geeks and
+adapted that code for my needs. Madhira Datta walked me through how to calculate the maximum number
+of edges in a graph for wrapping and non wrapping dungeons. I also found the method to condense my
+treasure enum and factory into one class and adapted that code from
+https://connected2know.com/programming/java-factory-pattern/. All citations have in line citations.
