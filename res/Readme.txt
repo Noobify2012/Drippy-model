@@ -33,10 +33,17 @@ treasure list and cleanly present them when called.
 Caves and tunnels know who they are neighbors with as well as where they are in the dungeon. Edges
 contain the two caves associated with them. They also know which direction to travel to get from
 one cave to the other. In the next implementation, this will be used so that the player takes a
-direction of travel rather than an index to move through the dungeon.
+direction of travel rather than an index to move through the dungeon. Caves also have a treasure
+list in them that if selected by the treasure placement method stores the randomly generated
+treasure.
 
+-The Dungeon implementation will let the user try and build the smallest possible graph by allowing
+them to build any graph with at least 6 nodes. It may not be able to construct it the first time and
+will throw an error if it cannot build a correct start and end point based on the randomly selected
+start point.
 
-
+-The constructor for the dungeon will also check for over interconnectivity, ensures there can't be
+more than 100% treasure in caves.
 
 
 How To Run. Instructions to run the program should include the following:
@@ -71,22 +78,30 @@ Run 2 -- Run2.txt:
 
 Design/Model Changes. It is important to document what changes that you have made from earlier designs. Why were those changes required? You can write these changes in terms of version if you wish.
 
-- the weapon and gear abstract classes and sub classes ended up being exercised with factory methods that made the 
-production and packaging of those items easier and more user friendly because all the constructors and arguements 
-were handled in private methods and handled in the background. 
+- I had to change some fields in both the cave and dungeon classes in order to help out with some
+functionality. This includes adding a set field in the cave class in order to do help with Kruskal's
+algorithm.
 
-- lots of private methods were added to handle all of the object passing and maintinence. 
+-In order to do the depth first search, I had to add a helper class called graph for doing most of
+the work. This code was found on geeks for geeks and adapted for my implementation. Citations are
+in line.
 
-
-
-Assumptions. List what assumptions you made during program development and implementation. Be sure that these do not conflict with the requirements of the project.
-- Potions and all gear will remain in effect for the entire length of the battle and rematches. All gear will remain the same through out the battle and rematches until the program is finished and restarted. 
-
-- a player will have the same weapon through out a battle and will only be able to draw a new weapon if there is a rematch.
+- lots of private methods were added to handle all the object passing and maintenance.
 
 
+Assumptions. List what assumptions you made during program development and implementation. Be sure
+that these do not conflict with the requirements of the project.
 
-Limitations. Limitations of your program if any. This should include any requirements that were not implemented or were not working correctly (including something that might work some of the time).
+- For the first model version where the driver class runs everything the player will navigate the
+dungeon via determined paths. I executed this by using an index look up based on the caves along
+shared edges.
+
+- A player will always want to pick up all treasure and doesn't have a limit to how much treasure
+they can carry.
+
+
+Limitations. Limitations of your program if any. This should include any requirements that were not
+implemented or were not working correctly (including something that might sometimes work).
 
 -While the program can run through the dungeon as either a breadth first(the shortest path from
 start point to end point) or depth first(start at node 0 and run through all the nodes), that has to
@@ -98,7 +113,13 @@ currently navigates. In its current implementation, the player moves via a list 
 of a list of directions. This will be an improved feature that is fixed in the next project
 deliverable.
 
+-The program can keep track of the players treasure that they pick up but presents it an ugly
+manner. Instead of accumulating it and saying how many of each type of treasure, it just appends
+each piece of treasure and prints a large ugly this. This will be improved in the next version if
+there is time.
 
+- Due to almost every method being private or package private it is hard to test the functionality
+without the testing being done in the same class or package.
 
 
 Citations. 
