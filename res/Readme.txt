@@ -1,30 +1,58 @@
-About/Overview: This is my implementation of the Dungeon Model. A player enters the dungeon with nothing but their empty treasure sack. 
-The player then navigates the dungeon from their start point to the end. They can either start at a randomly selected point and navigate to a 
-point at least 5 moves away or they can start at point 0 and move through all of the nodes in the dungeon. 
+About/Overview: This is my implementation of the Dungeon Model. A player enters the dungeon with
+nothing but their empty treasure sack. The player then navigates the dungeon from their start point
+to the end. They can either start at a randomly selected point and navigate to a point at least 5
+moves away or start at cave 0 and move through all the nodes in the dungeon.
 
 
 List of features. List all features that are present in your program.
-- In its current implemenation, the player can be initialized, assigned attributes, assigned weapons, and assigned gear 
-with all of their effects applied with 3 line calls after the player is created and the rest done in private methods. This
-takes any of the constructing or building out of the users hands and removes some of the associated error. The only reason
-this isn't all done automatcially when a player is created because of the requirements for printing out the information in the proper order. 
+- When the program starts the user is greeted and presented with the criteria for entering proper
+command line arguments for starting the dungeon model. The first level of error checking starts
+there. The input parser ensures that the user enters at least true or false for the wrapping
+requirement and positive integers for rows, columns, interconnectivity, and percentage of caves with
+treasure.
 
-- Uses a weapon factory and gear factory that automatically generates and the associtated equipment or weapon when called and returns it to
- the player with no input required.
+-The user has no real interaction with any constructors. The startup parser passes all of those
+arguments, once validated at the first level, to the constructor. From there the dungeon and player
+are automatically built and run.
 
-- All of the gear(belts, headgear, footwear and potions) have unique names that are generated based on their effect on the player. 
+-In the dungeon implementation, it can be set to either run automatically as a breadth first path,
+meaning from start point to end point as efficiently as possible. Or it can run as a depth first
+path starting at node 0 and go to every node. Player navigates the dungeon via the unique index
+value of each of the caves or tunnels.
 
-- The simplicity of how the player just loses damage and no other attribute makes it very easy to reset the battle with only one call
+-As the player moves through the dungeon, the program will identify which caves have treasure in
+them, display the treasure in the cave and then automatically pick it up before the player moves to
+the next cave.
 
-- If the user, in the future, wants to expand the gear and/or the weapons it is very easy to add them in and include their production in the respective factories. 
+-One unique design feature is the treasure implementation which is an enum and factory pattern all
+in one class. This makes the code slightly more compact as a single stop for construction and
+validation of treasure. This allows the program to easily identify treasure objects in the players
+treasure list and cleanly present them when called.
+
+-Caves and edges have a lot of detail which will help for expanding capability going forward.
+Caves and tunnels know who they are neighbors with as well as where they are in the dungeon. Edges
+contain the two caves associated with them. They also know which direction to travel to get from
+one cave to the other. In the next implementation, this will be used so that the player takes a
+direction of travel rather than an index to move through the dungeon.
+
+
+
+
 
 How To Run. Instructions to run the program should include the following:
 
 How to run the jar file
-There are no command lind arguements that are required to run the jar file other than java -jar Project3_Dungeon_Model.jar
+There are no command lind arguments that are required to run the jar file other than
+"java -jar Project3_Dungeon_Model.jar"
 
 How to Use the Program. Instructions on how to use functionality in your program. if interactive, how to interact with your program? Pay particular attention to the parts that are not part of the example runs that you provided.
-- The only thing the user needs to do is start the jar file and when prompted either enter restart to restart the battle or quit to end the program. 
+- The user only needs to start the jar file as described above and when prompted enter the dungeon
+construction requirements. A boolean value for wrapping or non(true for wrapping, false for non),
+a positive integer for the number of rows, a positive integer for the number of columns, zero or
+greater for the level of interconnectivity, and an integer between 0 and 100 for the percentage of
+caves with treasure.
+
+- The program will do the rest.
 
 Description of Examples. 
 
@@ -60,14 +88,18 @@ Assumptions. List what assumptions you made during program development and imple
 
 Limitations. Limitations of your program if any. This should include any requirements that were not implemented or were not working correctly (including something that might work some of the time).
 
-- While the scanner will parse the user input when asking the user if they want to restart the battle or quit, it has a bug where if the words reset and quit are passed with a space in between, 
-it will do both or it will quit if it quit comes first. 
+-While the program can run through the dungeon as either a breadth first(the shortest path from
+start point to end point) or depth first(start at node 0 and run through all the nodes), that has to
+be specifically configured in the code. One has to be turned on and the other turned off.
 
--I didn't understand the random number generator constructors and their structure until it was a little late to implement. I just have a bunch of little random number generators. 
+-The player has a move method and there are directions in the enum in the game which are used to
+determine direction from one cave to another along an edge object but that is not how the player
+currently navigates. In its current implementation, the player moves via a list of indexes instead
+of a list of directions. This will be an improved feature that is fixed in the next project
+deliverable.
 
-- should have improved some of the structure using enums for things like weapon name, it would have made some of the testing. Also the way I did random number generation made it difficult to test certain things like getting gear and checking for its type. 
 
--Sometimes the first run hangs and won't complete. I'm not sure if this is an IDE issue or something with my machine but I can't tell if its a bug or just machine issue. Either way if the program is restarted it immeediatly works again. 
+
 
 Citations. 
 I found an example of how to simulate the dice on stackoverflow and how to sort the values so that we can do the selection for the attribute implementation:  //https://stackoverflow.com/questions/20518078/how-to-sort-listinteger
