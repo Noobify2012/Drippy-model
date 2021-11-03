@@ -46,7 +46,7 @@ public class DungeonImpl implements Dungeon {
     ArrayList<Edge> potEdgeList = new ArrayList<>();
     ArrayList<Edge> leftOverEdge = new ArrayList<>();
     ArrayList<Edge> finalEdgeList = new ArrayList<>();
-    ArrayList<Integer> shortestPath = new ArrayList<> ();
+    ArrayList<Integer> shortestPath = new ArrayList<>();
     Cave[][] gameboard = new Cave[rows][columns];
 
     this.wraps = wraps;
@@ -63,6 +63,7 @@ public class DungeonImpl implements Dungeon {
     this.player = player;
     this.shortestPath = shortestPath;
     this.graph = graph;
+
 
 
 
@@ -170,12 +171,14 @@ public class DungeonImpl implements Dungeon {
       }
     }
 
-    getDungeon();
   }
 
 
-
-  void getDungeon() {
+  /**
+   * This builds all aspects of the dungeon including finding the start and end point. Adding
+   * treasure and placing the player in the dungeon and running them through the path.
+   */
+  public void getDungeon() {
     //runs Kruscals, adds interconnectivity
     runKruscals();
     //generates a start point by index
@@ -196,6 +199,8 @@ public class DungeonImpl implements Dungeon {
     runDungeon();
 
   }
+
+
 
   //This is the code for running a depth first search of the edges which will run a player through
   // all possible nodes
@@ -406,7 +411,7 @@ public class DungeonImpl implements Dungeon {
       //System.out.print("\nNumber of caves that need treasure: " + treasCaveNum);
       RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1,
               0, 1);
-      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 0, 1);
+      RandomNumberGenerator rand2 = new RandomNumberGenerator(1, 3, 0, 1);
       TreasureImpl treasureFactory = new TreasureImpl();
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = rand2.getRandomNumber();
@@ -526,8 +531,6 @@ public class DungeonImpl implements Dungeon {
         //check for single set
         if (setList.size() == 1 && interconnect == 0) {
           exitCond = true;
-//          String finalEdgeListString = "status of final edge list: " + finalEdgeList.toString();
-//          Driver.printHelper(finalEdgeListString);
         } else if (setList.size() == 1 && interconnect > 0) {
           //dump edges into single list
           for (int l = 0; l < this.potEdgeList.size(); l++) {
@@ -704,4 +707,48 @@ public class DungeonImpl implements Dungeon {
     }
     return false;
   }
+
+  @Override
+  public int getGameBoardRows() {
+    //make deep copy and return
+    return rows;
+  }
+
+  @Override
+  public int getGameBoardCols() {
+    //make deep copy and return
+    return columns;
+  }
+
+  @Override
+  public Cave[][] getGameBoard() {
+    Cave[][] copy = new Cave[rows][columns];
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < columns; c++) {
+        copy[c][r] = gameboard[c][r];
+      }
+    }
+    //make deep copy and return
+    return copy;
+  }
+
+  @Override
+  public ArrayList<Edge> getFinalEdgeList() {
+    ArrayList<Edge> copy = new ArrayList<>();
+    for (int i = 0; i < finalEdgeList.size(); i++) {
+      copy.add(finalEdgeList.get(i));
+    }
+    return copy;
+  }
+
+  @Override
+  public ArrayList<Integer> getFinalPath() {
+    ArrayList<Integer> copyList = new ArrayList<>();
+    for (int i = 0; i < shortestPath.size(); i++) {
+      copyList.add(shortestPath.get(i));
+    }
+    return copyList;
+  }
+
+
 }

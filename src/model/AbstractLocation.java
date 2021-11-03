@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public abstract class AbstractLocation implements Location {
   protected Point2D location;
-  private ArrayList neighborList;
-  private ArrayList treasureList;
+  private ArrayList<Integer> neighborList;
+  private ArrayList<Treasure> treasureList;
 
   protected AbstractLocation(Point2D location, ArrayList neighborList,
                              ArrayList treasureList) {

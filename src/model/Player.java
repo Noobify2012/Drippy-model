@@ -29,4 +29,6 @@ public interface Player {
    */
   void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
                     ArrayList<Direction> possibleDirection);
+
+  ArrayList<Treasure> getTreasureList();
 }

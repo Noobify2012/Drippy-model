@@ -1,7 +1,5 @@
 package random;
 
-import java.util.ArrayList;
-
 /**
  * A class for generating random numbers and list of random numbers.
  */
@@ -36,8 +34,6 @@ public class RandomNumberGenerator {
               + " maximum value");
     } else if (listSize == 1) {
       getRandomNumber();
-    } else if (listSize > 1) {
-      getRandomList(min, max, seed, listSize);
     }
   }
 
@@ -53,22 +49,5 @@ public class RandomNumberGenerator {
       int returnInt = 0;
       return returnInt;
     }
-  }
-
-  /**Used to generate a list of psudo random integers.
-   *
-   * @param min the minimum integer value inclusive of the range of numbers to be selected.
-   * @param max the maximum integer value inclusive of the range of numbers to be selected.
-   * @param seed A seed value for helping produce consistent and repeatable numbers for testing.
-   * @param listSize A list of integers which may be required for certain operations.
-   * @return An array list of integers.
-   */
-  public ArrayList<Integer> getRandomList(int min, int max, int seed, int listSize) {
-    ArrayList<Integer> numList = new ArrayList();
-    for (int i = 0; i < listSize; i++) {
-      //generate random number
-      //add to list
-    }
-    return numList;
   }
 }

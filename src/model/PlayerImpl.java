@@ -61,8 +61,6 @@ public class PlayerImpl implements Player {
   @Override
   public void move(int index, ArrayList<Direction> directions,
                    ArrayList<Treasure> curTreasure) {
-    //verify player can move east
-    //reduce column by 1
 
     updatePlayerLocation(index, directions, curTreasure);
 
@@ -72,8 +70,12 @@ public class PlayerImpl implements Player {
    *
    * @return the current contents of the player's treasure list.
    */
-  private ArrayList<Treasure> getTreasureList() {
-    return this.treasureList;
+  public ArrayList<Treasure> getTreasureList() {
+    ArrayList<Treasure> treasureCopy = new ArrayList<>();
+    for (int i = 0; i < this.treasureList.size(); i++) {
+      treasureCopy.add(this.treasureList.get(i));
+    }
+    return treasureCopy;
   }
 
   /**This builds and returns the player's status which includes, the index of the cave they are
@@ -127,6 +129,7 @@ public class PlayerImpl implements Player {
    * @param treasureInCave the treasure in the cave where the player enters the dungeon.
    * @param directions the directions the player can go from the start point.
    */
+  @Override
   public void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
                            ArrayList<Direction> directions) {
     updatePlayerLocation(caveIndex, directions, treasureInCave);

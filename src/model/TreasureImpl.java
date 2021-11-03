@@ -10,7 +10,7 @@ public class TreasureImpl {
   /**
    * The treasure enum which contains rubies, diamonds, and sapphires.
    */
-  public enum TreasureType {
+  enum TreasureType {
     RUBY("Ruby"), DIAMOND("Diamond"), SAPPHIRE("Sapphire");
 
     private final String name;
@@ -79,7 +79,7 @@ public class TreasureImpl {
      *                     or sapphire.
      * @return a piece of treasure.
      */
-    public static Treasure getTreasureFromEnum(TreasureType treasureType) {
+    static Treasure getTreasureFromEnum(TreasureType treasureType) {
 
       Treasure treasure = null;
 

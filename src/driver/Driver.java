@@ -86,6 +86,7 @@ public class Driver {
 
     Player player = new PlayerImpl();
     DungeonImpl test = new DungeonImpl(wraps, rows, columns, interconnect, treasPer, player);
+    test.getDungeon();
   }
 
   /**This is a helper which takes in a string and prints it.

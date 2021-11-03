@@ -76,7 +76,7 @@ public class Cave extends AbstractLocation {
    *
    * @return an ArrayList of the neighbors of the current cave.
    */
-  ArrayList<Integer> getNeighbors() {
+  public ArrayList<Integer> getNeighbors() {
     return this.neighborList;
   }
 
@@ -92,7 +92,7 @@ public class Cave extends AbstractLocation {
    *
    * @return an array list of all the treasure that has been added to the player.
    */
-  ArrayList<Treasure> getTreasureList() {
+  public ArrayList<Treasure> getTreasureList() {
     return this.caveTreasureList;
   }
 
