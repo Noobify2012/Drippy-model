@@ -192,9 +192,9 @@ public class DungeonImpl implements Dungeon {
 
     runBfs();
 
-//    runDfs();
-//
-//    setUpPlayerDfs();
+    //runDfs();
+
+    //setUpPlayerDfs();
 
     runDungeon();
 

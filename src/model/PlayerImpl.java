@@ -66,7 +66,7 @@ public class PlayerImpl implements Player {
 
   }
 
-  /**A help to get the current treasure list.
+  /**A helper to get the current treasure list.
    *
    * @return the current contents of the player's treasure list.
    */

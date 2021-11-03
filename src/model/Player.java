@@ -30,5 +30,9 @@ public interface Player {
   void enterDungeon(int caveIndex, ArrayList<Treasure> treasureInCave,
                     ArrayList<Direction> possibleDirection);
 
+  /**A helper to get the current treasure list.
+   *
+   * @return the current contents of the player's treasure list.
+   */
   ArrayList<Treasure> getTreasureList();
 }
